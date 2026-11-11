@@ -1,5 +1,5 @@
 /**
- * @momako-jam/core - Types & Definitions
+ * @momako/core - Types & Definitions
  */
 
 export type EventCallback = (...args: unknown[]) => void;
