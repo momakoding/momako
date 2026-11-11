@@ -1,5 +1,5 @@
 {
-  "name": "momako-jam-er",
+  "name": "momako-er",
   "private": true,
   "version": "0.3.0",
   "type": "module",
@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@momako-jam/core": "workspace:*",
-    "@momako-jam/hud": "workspace:*",
+    "@momako/core": "workspace:*",
+    "@momako/hud": "workspace:*",
     "@tailwindcss/vite": "^4.1.17",
     "marked": "^18.2.0",
     "phaser": "^4.0.0",

@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import { GameShell } from '../engine/game-shell';
-import { EVENT_KEYS, useEventBus } from '@momako-jam/core';
+import { EVENT_KEYS, useEventBus } from '@momako/core';
 
 const eventBus = useEventBus();
 

@@ -3,8 +3,8 @@
  *
  * 归属原则：
  *   - UI 无关、仅本游戏世界使用的数值/标识（场景 key、玩法调参）。
- *   - engine/ 不应 import 本文件（engine 若需要 fallback，走自己的 SHELL_DEFAULTS）。
- *   - Vue <-> Phaser 跨界事件键名（EVENT_KEYS）在 @/shared/runtime/event-keys，不在本文件。
+ *   - shared/engine 不应 import 本文件（engine 若需要 fallback，走自己的 SHELL_DEFAULTS）。
+ *   - Vue <-> Phaser 跨界事件键名（EVENT_KEYS）来自 @momako/core，不在本文件。
  */
 
 // ---- 场景 Key ----
@@ -14,7 +14,7 @@ export const SCENE_KEYS = {
 } as const
 
 // ---- 游戏配置 ----
-// 画幅不在此处：实际尺寸由 settings-store 的分辨率设置决定，
+// 画幅不在此处：实际尺寸由 @momako/hud 的 useSettingsStore 分辨率设置决定，
 // 场景内一律读 this.scale.gameSize.width/height，地图按跳跃物理推导生成。
 export const GAME_CONFIG = {
   STAR_COUNT: 12,

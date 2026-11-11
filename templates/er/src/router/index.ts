@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { HomePage, HowToPlayPage, SettingsPage, AboutUsPage } from '@momako-jam/hud';
-import GamePage from '../pages/game/index.vue';
+import { HomePage, HowToPlayPage, SettingsPage, AboutUsPage } from '@momako/hud';
+import { GamePage } from '@/modules/game';
 
 export const router = createRouter({
   history: createWebHashHistory(),

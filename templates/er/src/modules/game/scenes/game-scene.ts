@@ -2,7 +2,7 @@ import * as Phaser from 'phaser'
 import { SCENE_KEYS, GAME_CONFIG } from './constants'
 import { buildPlatformChain, maxJumpHeight } from './platform-chain'
 import type { IGameSceneData } from './types'
-import { EVENT_KEYS, useEventBus } from '@momako-jam/core'
+import { EVENT_KEYS, useEventBus } from '@momako/core'
 
 const eventBus = useEventBus()
 /**

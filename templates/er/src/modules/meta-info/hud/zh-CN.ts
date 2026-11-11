@@ -1,6 +1,6 @@
 /**
  * 游戏内文案（简体中文）— HUD 标签与暂停菜单，schema 事实源，en.ts 以 `typeof zhCN` 锁定结构一致。
- * 只放数据；随游戏玩法调整的文案改这里，框架 UI 文案在 shared/runtime/i18n/locales/。
+ * 只放数据；随游戏玩法调整的文案改这里，框架 UI 文案在 @momako/hud 的 i18n locales。
  */
 
 const zhCN = {

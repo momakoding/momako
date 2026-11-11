@@ -8,10 +8,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue';
-import { BootScene, GameScene, SCENE_KEYS } from '@/scenes';
-import { EVENT_KEYS, useEventBus } from '@momako-jam/core';
-import { GameShellLayout, useSettingsStore } from '@momako-jam/hud';
-import { useGame } from '@/runtime/game';
+import { BootScene, GameScene, SCENE_KEYS } from '../scenes';
+import { EVENT_KEYS, useEventBus } from '@momako/core';
+import { GameShellLayout, useSettingsStore } from '@momako/hud';
+import { useGame } from '@/shared/runtime';
 
 const gameContainer = ref<HTMLDivElement>();
 const score = ref(0);

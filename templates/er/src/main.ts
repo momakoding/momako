@@ -1,11 +1,10 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-import { createJamI18n } from '@momako-jam/hud';
+import { createJamI18n } from '@momako/hud';
 import { router } from './router';
 import App from './App.vue';
-import { META_MESSAGES } from './meta-info/messages';
-import { getHowToPlayMarkdown, getOssCredits } from './meta-info';
+import { META_MESSAGES, getHowToPlayMarkdown, getOssCredits } from '@/modules/meta-info';
 import './style.css';
 
 const pinia = createPinia();

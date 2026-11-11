@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser'
 import { SCENE_KEYS, GAME_CONFIG } from './constants'
-import { useGame } from '../runtime/game'
+import { useGame } from '@/shared/runtime'
 
 const game = useGame()
 /**
@@ -10,7 +10,7 @@ const game = useGame()
  * 1. Phaser.Scene 的 Class 结构
  * 2. preload / create 生命周期
  * 3. 用 Graphics 生成纹理 (generateTexture) 替代真实图片
- * 4. 画幅由 settings-store 的分辨率设置决定，场景内读 this.scale.gameSize
+ * 4. 画幅由 @momako/hud 的 useSettingsStore 分辨率设置决定，场景内读 this.scale.gameSize
  */
 export class BootScene extends Phaser.Scene {
   constructor() {
