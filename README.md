@@ -4,59 +4,63 @@
   <img src="./assets/momako_full.jfif" alt="Momako" width="30%" />
 </p>
 
-> 面向 Game Jam 与独立游戏的脚手架。
+<p align="center">
+  <b>English</b> · <a href="./docs/README/zh.md">中文</a> · <a href="./docs/README/ru.md">Русский</a> · <a href="./docs/README/sh.md">Srpskohrvatski</a>
+</p>
+
+> A starter kit for game jams and indie games.
 >
-> 提供主菜单、通用界面、设置弹窗、音频与分辨率持久化存储、多语言切换、响应式画布与 AI 协作规范。
+> It provides a main menu, shared UI, a settings dialog, persistent audio and resolution settings, language switching, a responsive canvas and rules for working with AI agents.
 
 ---
 
-## 支持的引擎与框架矩阵 (Supported Engines & Frameworks)
+## Supported Engines and Their Tech Stacks
 
-Momako 提供不同引擎与框架的选型，拥有统一的界面体验与事件通信机制：
+Momako offers several engines and frameworks that share the same interface and the same event-based communication:
 
-| 引擎 / 模式 | 模板标识 | 特性与适用场景 | 技术栈 |
-| --- | --- | --- | --- |
-| 🎮 **2D Web** | `er` (`momako-er`) | 支持 Phaser 4 街机物理与关卡生成，也支持纯 Vue 界面游戏（放置、卡牌、文字推理、挂机养成），或两者混合。 | Vue 3 + Phaser 4 / Pure Vue + HUD |
-| 🌐 **3D Web** | `san` (`momako-san`) | 基于 TresJS 采用声明式语法编写 3D 场景、光影、网格与相机跟随，适合构建 3D 原型。 | Vue 3 + TresJS (Three.js) + HUD |
-| 🤖 **Godot 4.x** | `godot` (`momako-godot`) | 尚未实现 | Godot 4, GDScript |
-| ⚡ **Unity 6** | `unity` (`momako-unity`) | 尚未实现 | Unity 6, C# |
-| 🔥 **Unreal 5** | `unreal` (`momako-unreal`) | 尚未实现 | UE5, Blueprints |
+| Engine / Mode | Template ID | Package Name | Features and Use Cases | Tech Stack |
+| --- | --- | --- | --- | --- |
+| 🎮 **2D Web** | `er` | `momako-er` | Phaser 4 arcade physics and level generation. It also supports pure Vue games (idle, card, text-mystery, incremental) and mixes of both. | Vue 3 + Phaser 4 / Pure Vue + HUD |
+| 🌐 **3D Web** | `san` | `momako-san` | Declarative 3D scenes, lights, meshes and a follow camera written with TresJS. Suited to 3D prototypes. | Vue 3 + TresJS (Three.js) + HUD |
+| 🤖 **Godot 4.x** | `godot` | `momako-godot` | Not implemented yet | Godot 4, GDScript |
+| ⚡ **Unity 6** | `unity` | `momako-unity` | Not implemented yet | Unity 6, C# |
+| 🔥 **Unreal 5** | `unreal` | `momako-unreal` | Not implemented yet | UE5, Blueprints |
 
-### 通用共享模块 (Universal Packages)
+### Shared Packages
 
-* **`@momako/hud`**：面向全引擎 Web 游戏的通用 UI 库。包含主菜单（`home`）、玩法说明（`how-to-play`）、设置弹窗（`settings`）、制作人员（`about-us`）、`<GameShellLayout>` 游戏容器、Pinia 设置与存档持久化、以及 Tailwind CSS v4 样式系统。
-* **`@momako/core`**：跨端零依赖事件总线与事件定义。解耦游戏画面与界面层，双方仅依赖事件协议通信。
+* **`@momako/hud`**: a UI library shared by all web engines. It contains the main menu (`home`), how-to-play (`how-to-play`), settings dialog (`settings`) and credits (`about-us`) pages, the `<GameShellLayout>` game container, Pinia-based settings and save persistence, and a Tailwind CSS v4 style system.
+* **`@momako/core`**: a dependency-free event bus and event definitions that work across engines. The game view and the interface layer depend only on the event protocol, not on each other.
 
 ---
 
-## 快速上手：创建你的游戏工程 (Scaffold a New Game)
+## Quick Start: Create Your Game Project
 
-> 💡 **提示**：本仓库为脚手架生成工具。开发游戏无需克隆本仓库，在终端执行命令即可创建独立工程：
+> 💡 **Note**: this repository is the scaffolding tool. You do not need to clone it to build a game. Run a command in your terminal to create a standalone project:
 
 ```bash
 npx momako create my-game
-# 或者
+# or
 npm create momako my-game
 ```
 
-交互式命令行会引导你快速选型：
+The interactive prompt walks you through two choices:
 
-1. **输入工程名称**（默认 `my-jam-game`）
-2. **选择目标引擎**：
-   * `1) 🎮 2D Web (Vue 3 + Phaser 4 / 纯 Vue) - [momako-er]`
-   * `2) 🌐 3D Web (TresJS / 声明式 3D) - [momako-san]`
+1. **Project name** (default `my-jam-game`)
+2. **Target engine**:
+   * `1) 🎮 2D Web (Vue 3 + Phaser 4 / pure Vue) - [momako-er]`
+   * `2) 🌐 3D Web (TresJS / declarative 3D) - [momako-san]`
    * `3) 🤖 Godot 4.x Engine - [momako-godot]`
    * `4) ⚡ Unity 6 (WebGL/PC) - [momako-unity]`
    * `5) 🔥 Unreal Engine 5 - [momako-unreal]`
 
-也可以使用非交互式参数一步到位：
+You can also skip the prompt with arguments:
 
 ```bash
 npx momako create my-2d-game --template er
 npx momako create my-3d-game --template san
 ```
 
-### 进入生成的工程开发
+### Develop in the generated project
 
 ```bash
 cd my-game
@@ -64,57 +68,57 @@ pnpm install
 pnpm dev
 ```
 
-工程包含独立的 Git 初始化配置、玩法设计文档 `docs/spec/spec.md`、开发指南 `docs/guide/` 以及专为游戏开发者调优的 AI 协作规则 `AGENTS.md`。
+The project comes with its own Git setup, the gameplay design document `docs/spec/spec.md`, development guides in `docs/guide/`, and an `AGENTS.md` with AI collaboration rules tuned for game developers.
 
 ---
 
-## 核心设计理念 (Core Concepts)
+## Core Concepts
 
-1. **游戏渲染与界面解耦**：
-   * Canvas / 3D 视口负责纯粹的游戏运行、物理计算与操作交互。
-   * 开始界面、音量与音效控制、画质与分辨率调节、暂停菜单、存档等通用 UI 均由统一的 `@momako/hud` 承载，二者仅通过标准化的事件定义通信。
+1. **Game rendering is separate from the interface**:
+   * The canvas or 3D viewport only runs the game, its physics and player input.
+   * The start screen, volume and sound controls, quality and resolution settings, pause menu and saves all live in `@momako/hud`. The two sides talk only through the standard event definitions.
 
-2. **游戏内容支持多页面扩展**：
-   * 模板将游戏内容收敛至 `src/pages/game/`（入口为 `pages/game/index.vue`）。
-   * 支持扩展游戏子页面，可自由组合文字剧情、商城、关卡选择、背包等页面。
+2. **Game content can grow into many pages**:
+   * Templates organize code by domain. Game content lives in `src/modules/game/` and shared code in `src/shared/`.
+   * You can add game sub-pages such as story text, a shop, level select or an inventory.
 
-3. **AI 协同开发规范**：
-   * 整合 Momakoding 的 AI 协同样板，内置 `AGENTS.md` 与 `docs/spec/` 规范。
-   * 统一了组件 kebab-case 命名、Tailwind v4 `@apply` 编写风格、Keep a Changelog 格式与提交前确认流程。
+3. **Rules for AI-assisted development**:
+   * It includes the Momakoding AI collaboration conventions through `AGENTS.md` and `docs/spec/`.
+   * They fix kebab-case component names, the Tailwind v4 `@apply` style, the Keep a Changelog format and a confirmation step before commits.
 
 ---
 
-## 贡献与框架维护 (Monorepo Development)
+## Contributing and Maintaining the Framework
 
-如果你希望为 `momako` 贡献新引擎模板、拓展 HUD 组件或维护 CLI 工具，可克隆本 Monorepo 进行联调：
+To contribute a new engine template, extend the HUD components or maintain the CLI, clone this monorepo:
 
 ```bash
-# 1. 安装工作区全部依赖
+# 1. Install all workspace dependencies
 pnpm install
 
-# 2. 全量并行编译校验
+# 2. Build and check everything in parallel
 pnpm -r build
 
-# 3. 校验并同步维护者与模板文档
+# 3. Check and sync maintainer and template docs
 pnpm sync:docs
 
-# 4. 运行对应开发服务器
-pnpm dev:er      # 启动 2D 游戏开发
-pnpm dev:san     # 启动 3D 游戏开发
-pnpm dev:cli     # 调试脚手架生成工具
+# 4. Start a dev server
+pnpm dev:er      # 2D game development
+pnpm dev:san     # 3D game development
+pnpm dev:cli     # debug the scaffolding tool
 ```
 
 ---
 
-## 团队与致谢 (Credits & Team)
+## Credits and Team
 
-* **出品团队**：**Momakoding** 团队
-* **开源致谢**：
-  * 感谢 [Phaser](https://phaser.io/)、[TresJS](https://tresjs.org/)、[Three.js](https://threejs.org/)、[Vue 3](https://vuejs.org/) 与 [Tailwind CSS](https://tailwindcss.com/) 社区的杰出基建。
-  * 感谢所有参与 Game Jam 的游戏创作者与开源贡献者。
+* **Made by**: the **Momakoding** team
+* **Open source thanks**:
+  * Thanks to the [Phaser](https://phaser.io/), [TresJS](https://tresjs.org/), [Three.js](https://threejs.org/), [Vue 3](https://vuejs.org/) and [Tailwind CSS](https://tailwindcss.com/) communities for the foundations this project builds on.
+  * Thanks to every game jam creator and open source contributor.
 
 ---
 
-## 开源协议 (License)
+## License
 
-本项目采用 [MIT License](./LICENSE) 开源协议。
+This project is released under the [MIT License](./LICENSE).
