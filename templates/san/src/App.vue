@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useSettingsStore } from '@momako-jam/hud';
+import { useSettingsStore } from '@momako/hud';
 
 const { locale } = useI18n();
 const settings = useSettingsStore();

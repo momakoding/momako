@@ -1,5 +1,5 @@
 {
-  "name": "momako-jam-san",
+  "name": "momako-san",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@momako-jam/core": "workspace:*",
-    "@momako-jam/hud": "workspace:*",
+    "@momako/core": "workspace:*",
+    "@momako/hud": "workspace:*",
     "@tailwindcss/vite": "^4.1.17",
     "@tresjs/cientos": "^5.10.1",
     "@tresjs/core": "^5.10.0",
