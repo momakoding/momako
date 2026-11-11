@@ -1,0 +1,25 @@
+{
+  "name": "@momako-jam/cli",
+  "version": "0.1.0",
+  "description": "Scaffolding CLI for Momako Jam Matrix",
+  "type": "module",
+  "bin": {
+    "momako-jam": "./bin/momako-jam.js",
+    "create-momako-jam": "./bin/momako-jam.js"
+  },
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "node ./bin/momako-jam.js"
+  },
+  "keywords": [
+    "game-jam",
+    "phaser",
+    "threejs",
+    "godot",
+    "unity",
+    "scaffold",
+    "cli"
+  ],
+  "author": "Momakoding",
+  "license": "MIT"
+}
