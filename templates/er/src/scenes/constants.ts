@@ -4,7 +4,7 @@
  * 归属原则：
  *   - UI 无关、仅本游戏世界使用的数值/标识（场景 key、玩法调参）。
  *   - engine/ 不应 import 本文件（engine 若需要 fallback，走自己的 SHELL_DEFAULTS）。
- *   - Vue <-> Phaser 跨界事件契约（EVENT_KEYS）在 @/shared/runtime/event-keys，不在本文件。
+ *   - Vue <-> Phaser 跨界事件键名（EVENT_KEYS）在 @/shared/runtime/event-keys，不在本文件。
  */
 
 // ---- 场景 Key ----

@@ -48,7 +48,7 @@ export async function runCreate(targetName, options = {}) {
   });
 
   try {
-    console.log('\n🌟 \x1b[1m\x1b[33mMomako Game Jam Matrix Scaffolder\x1b[0m\n');
+    console.log('\n🌟 \x1b[1m\x1b[33mMomako Jam Scaffolder\x1b[0m\n');
 
     // 1. Project Name
     let projectName = targetName;
@@ -86,10 +86,10 @@ export async function runCreate(targetName, options = {}) {
     if (engineConfig.type === 'web') {
       console.log('配置默认已集成组件:');
       console.log('  ✔ @momako-jam/hud (通用 HUD、开始菜单、暂停与设置弹层)');
-      console.log('  ✔ @momako-jam/core (跨边界 EventBus 与标准事件契约)');
+      console.log('  ✔ @momako-jam/core (跨边界 EventBus 与标准事件通信)');
       console.log('  ✔ 双语 i18n 系统 (zh-CN / en 结构校验)');
       console.log('  ✔ 音频与分辨率持久化存储 (Pinia persisted-state)');
-      console.log('  ✔ AI Agent 协同样板 (AGENTS.md + DECISION_LOG.md)\n');
+      console.log('  ✔ AI Agent 协同样板 (AGENTS.md + spec.md)\n');
     }
 
     // 4. Locate template

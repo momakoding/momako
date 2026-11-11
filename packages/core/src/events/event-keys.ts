@@ -1,5 +1,5 @@
 /**
- * 事件 Key 契约（Game Engine <-> Vue UI 通信）—— 跨引擎统一标准。
+ * 游戏事件键名（Game Engine <-> Vue UI 跨层通信标准）。
  */
 export const EVENT_KEYS = {
   SCORE_UPDATE: 'score:update',
