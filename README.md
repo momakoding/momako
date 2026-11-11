@@ -11,7 +11,7 @@
 Momako Jam 支持在 2D、3D、Web 与原生游戏引擎之间自由选型，开箱即拥有统一的 UI 体验与跨层事件通信：
 
 | 引擎 / 模式 | 模板标识 | 特性与适用场景 | 技术栈 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | 🎮 **2D Web** | `er` (`momako-jam-er`) | **二维的二（er）**。既支持 Phaser 4 街机物理与关卡生成，也原生支持纯 Vue 界面游戏（放置、卡牌、文字推理、挂机养成），或两者混合。 | Vue 3 + Phaser 4 / Pure Vue + HUD |
 | 🌐 **3D Web** | `san` (`momako-jam-san`) | **三维的三（san）**。采用极速声明式 3D，像写普通 Vue 组件一样编写 3D 场景、光影、网格与相机跟随，适合快速 3D 原型落地。 | Vue 3 + TresJS (Three.js) + HUD |
 | 🤖 **Godot 4.x** | `godot` (`momako-jam-godot`) | 工业级独立游戏首选。开箱即用的 Godot 4.3+ 场景树结构、像素/矢量渲染配置以及 itch.io Web 导出预设。 | Godot 4, GDScript |
@@ -19,6 +19,7 @@ Momako Jam 支持在 2D、3D、Web 与原生游戏引擎之间自由选型，开
 | 🔥 **Unreal 5** | `unreal` (`momako-jam-unreal`) | Unreal Engine 5 Jam 极速原型模板与蓝图规约。 | UE5, Blueprints |
 
 ### 通用共享模块 (Universal Packages)
+
 * **`@momako-jam/hud`**：面向全引擎 Web 游戏的通用 UI 库。自带开始菜单（`home`）、玩法说明（`how-to-play`）、设置弹层（`settings`）、制作人员（`about-us`）、`<GameShellLayout>` 游戏容器、Pinia 设置与存档持久化、以及 Tailwind CSS v4 样式系统。
 * **`@momako-jam/core`**：跨端零依赖事件总线与事件定义（`EVENT_KEYS`）。游戏世界（Canvas / 3D）与 UI 状态层彻底解耦，无需关心对方内部实现。
 
@@ -35,15 +36,17 @@ npm create momako-jam my-game
 ```
 
 交互式命令行会引导你快速选型：
+
 1. **输入工程名称**（默认 `my-jam-game`）
 2. **选择目标引擎**：
-   - `1) 🎮 2D Web (Vue 3 + Phaser 4 / 纯 Vue) - [momako-jam-er]`
-   - `2) 🌐 3D Web (TresJS / 声明式 3D) - [momako-jam-san]`
-   - `3) 🤖 Godot 4.x Engine - [momako-jam-godot]`
-   - `4) ⚡ Unity 6 (WebGL/PC) - [momako-jam-unity]`
-   - `5) 🔥 Unreal Engine 5 - [momako-jam-unreal]`
+   * `1) 🎮 2D Web (Vue 3 + Phaser 4 / 纯 Vue) - [momako-jam-er]`
+   * `2) 🌐 3D Web (TresJS / 声明式 3D) - [momako-jam-san]`
+   * `3) 🤖 Godot 4.x Engine - [momako-jam-godot]`
+   * `4) ⚡ Unity 6 (WebGL/PC) - [momako-jam-unity]`
+   * `5) 🔥 Unreal Engine 5 - [momako-jam-unreal]`
 
 也可以使用非交互式参数一步到位：
+
 ```bash
 npx momako-jam create my-2d-game --template er
 npx momako-jam create my-3d-game --template san

@@ -106,6 +106,18 @@ export async function runCreate(targetName, options = {}) {
     console.log(`🚀 正在生成工程到 \x1b[36m${targetDir}\x1b[0m ...`);
     copyDirRecursive(templateDir, targetDir, projectName);
 
+    // Copy secondary developer AGENTS template (_AGENTS.md -> AGENTS.md)
+    const possibleAgents = [
+      path.resolve(__dirname, '../../../_AGENTS.md'),
+      path.resolve(__dirname, '../../_AGENTS.md'),
+      path.resolve(__dirname, '../_AGENTS.md'),
+      path.resolve(__dirname, '_AGENTS.md'),
+    ];
+    const agentsSource = possibleAgents.find((p) => fs.existsSync(p));
+    if (agentsSource) {
+      fs.copyFileSync(agentsSource, path.join(targetDir, 'AGENTS.md'));
+    }
+
     // Update spec.md title with project name if present
     const specPath = path.join(targetDir, 'docs', 'spec', 'spec.md');
     if (fs.existsSync(specPath)) {

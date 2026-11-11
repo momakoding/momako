@@ -79,19 +79,18 @@
 
 - **Before executing any `git commit`, ask the user for review confirmation via the interactive question-asking tool.** Batch all commits into one call when multiple commits are proposed.
 - Present the confirmation question and choices translated into the user's active conversational language.
-- Question format (in the user's language, e.g. Chinese):
+- Question template (translated into the user's conversational language, e.g. Chinese when chatting in Chinese):
   ```
-  该提交通过吗：
+  Does this commit pass review:
   {{commit message including body}}
 
-  描述：{{short description of the change in user language}}
+  Description: {{short description of the change in user language}}
   ```
-  (Or in English if conversing in English: `Does this commit pass review:\n{{commit message}}\n\nDescription: {{short description}}`).
-- Options per question (translated into user's language, e.g. in Chinese / English):
-  1. `通过` / `Approve` — confirmation given; proceed with the commit.
-  2. `不通过，暂缓提交` / `Reject, defer commit` — rejected; do not commit, leave changes staged/unstaged as they are.
-  3. `不通过，原因是` / `Reject with reason:` — rejected with a reason; let the user provide the reason, then address feedback before re-proposing.
-- Never commit without an explicit affirmative approval answer (`通过` / `Approve`).
+- Options per question (translated into the user's active conversational language):
+  1. `Approve` — confirmation given; proceed with the commit.
+  2. `Reject, defer commit` — rejected; do not commit, leave changes staged/unstaged as they are.
+  3. `Reject with reason:` — rejected with a reason; let the user provide the reason, then address feedback before re-proposing.
+- Never commit without an explicit affirmative approval answer (`Approve`).
 
 ---
 
@@ -110,6 +109,9 @@ You are an AI core maintainer building **`momako-jam`** — a multi-engine Game 
   - Templates own only game content pages under `src/pages/game/index.vue`.
   - All universal Jam UI pages live in `@momako-jam/hud` and are imported into templates' routers.
   - Framework maintainer docs live in root `docs/maintainer/` and `docs/DECISION_LOG.md`. User docs live inside each template's `docs/` (`onboarding/`, `guide/`, `spec/`).
+  - **Two AGENTS files only:**
+    - `AGENTS.md` (root): Dedicated to framework maintainers building this monorepo.
+    - `_AGENTS.md` (root): Dedicated template for secondary development users building games (scaffolded to `AGENTS.md` in created projects). Templates do not maintain their own copies.
 
 ---
 
@@ -231,20 +233,11 @@ Skills provide domain-specific procedures and standards across different AI agen
 
 ### 6.2 Essential Runtime Skills (Must Load at Runtime)
 
-The following skills are **strongly recommended and must be loaded during matching execution**:
+The following skills are strongly recommended and must be loaded during matching execution:
 
-1. **`humanizer-zh`** (Chinese Prose & Documentation Naturalizer)
-   - **When to load**: Any session communicating in Chinese or authoring Chinese docs/copy. Removes robotic AI filler, templates, and artificial phrasing while strictly preserving technical facts, tone, and author voice.
-   - **Source**: `https://github.com/op7418/Humanizer-zh`
-   - **Install**: `npx skills add https://github.com/op7418/Humanizer-zh.git`
-2. **`humanizer`** (English Prose De-slopping)
-   - **When to load**: When drafting English documentation, guides, or commit messages. Eliminates generic AI tells (not-X-but-Y contrasts, forced triads, inflated claims).
-   - **Source**: `https://github.com/blader/humanizer`
-   - **Install**: `npx skills add https://github.com/blader/humanizer.git`
-3. **`changelog-principle`** (Keep a Changelog 1.1.0 Net-Result Guard)
-   - **When to load**: Whenever writing, updating, or reviewing `CHANGELOG` entries (including step 1 of `CCC` / `3C`). Enforces reader-observable net results instead of raw git commit logs or developer diaries.
-   - **Source**: `https://github.com/NBDatsuya/changelog-principle`
-   - **Install**: `npx skills add NBDatsuya/changelog-principle -g -y`
+1. `humanizer-zh` ([op7418/Humanizer-zh](https://github.com/op7418/Humanizer-zh))
+2. `humanizer` ([blader/humanizer](https://github.com/blader/humanizer))
+3. `changelog-principle` ([NBDatsuya/changelog-principle](https://github.com/NBDatsuya/changelog-principle))
 
 ---
 

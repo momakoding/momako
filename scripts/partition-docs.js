@@ -76,6 +76,13 @@ export function partitionAndSyncDocs() {
       }
       console.log(`✔ 模板 templates/${tpl} 页面纯粹性校验通过（仅保留游戏内容页面）`);
     }
+
+    // 检查并清除模板内可能残留的 AGENTS.md（统一使用根目录 _AGENTS.md 派发）
+    const tplAgents = path.join(rootDir, 'templates', tpl, 'AGENTS.md');
+    if (fs.existsSync(tplAgents)) {
+      console.warn(`⚠️ 模板 templates/${tpl} 发现冗余 AGENTS.md，正在自动清除（统一由根目录 _AGENTS.md 派发）...`);
+      fs.rmSync(tplAgents, { force: true });
+    }
   }
 
   // 4. 检查并同步每个模板的用户文档
