@@ -9,7 +9,8 @@
     "sync:docs": "node scripts/partition-docs.js",
     "dev:er": "pnpm --filter momako-er dev",
     "dev:san": "pnpm --filter momako-san dev",
-    "dev:cli": "pnpm --filter @momako/cli dev"
+    "dev:cli": "pnpm --filter momako start",
+    "test:cli": "pnpm --filter momako test"
   },
   "devDependencies": {
     "prettier": "^3.6.2",
