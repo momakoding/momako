@@ -1,15 +1,15 @@
 {
-  "name": "@momako-jam/cli",
+  "name": "@momako/cli",
   "version": "0.1.0",
-  "description": "Scaffolding CLI for Momako Jam Matrix",
+  "description": "Scaffolding CLI for Momako Matrix",
   "type": "module",
   "bin": {
-    "momako-jam": "./bin/momako-jam.js",
-    "create-momako-jam": "./bin/momako-jam.js"
+    "momako": "./bin/momako.js",
+    "create-momako": "./bin/momako.js"
   },
   "main": "./src/index.js",
   "scripts": {
-    "start": "node ./bin/momako-jam.js"
+    "start": "node ./bin/momako.js"
   },
   "keywords": [
     "game-jam",

@@ -8,11 +8,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const ENGINES = [
-  { id: 'er', name: '🎮 2D Web (Vue 3 + Phaser 4 / 纯 Vue) - [momako-jam-er]', type: 'web' },
-  { id: 'san', name: '🌐 3D Web (TresJS / 声明式 3D) - [momako-jam-san]', type: 'web' },
-  { id: 'godot', name: '🤖 Godot 4.x Engine - [momako-jam-godot]', type: 'native' },
-  { id: 'unity', name: '⚡ Unity 6 (WebGL/PC) - [momako-jam-unity]', type: 'native' },
-  { id: 'unreal', name: '🔥 Unreal Engine 5  - [momako-jam-unreal]', type: 'native' },
+  { id: 'er', name: '🎮 2D Web (Vue 3 + Phaser 4 / 纯 Vue) - [momako-er]', type: 'web' },
+  { id: 'san', name: '🌐 3D Web (TresJS / 声明式 3D) - [momako-san]', type: 'web' },
+  { id: 'godot', name: '🤖 Godot 4.x Engine - [momako-godot]', type: 'native' },
+  { id: 'unity', name: '⚡ Unity 6 (WebGL/PC) - [momako-unity]', type: 'native' },
+  { id: 'unreal', name: '🔥 Unreal Engine 5  - [momako-unreal]', type: 'native' },
 ];
 
 function copyDirRecursive(src, dest, transformPkgName) {
@@ -48,7 +48,7 @@ export async function runCreate(targetName, options = {}) {
   });
 
   try {
-    console.log('\n🌟 \x1b[1m\x1b[33mMomako Jam Scaffolder\x1b[0m\n');
+    console.log('\n🌟 \x1b[1m\x1b[33mMomako Scaffolder\x1b[0m\n');
 
     // 1. Project Name
     let projectName = targetName;
@@ -85,8 +85,8 @@ export async function runCreate(targetName, options = {}) {
     // 3. Optional Features for Web
     if (engineConfig.type === 'web') {
       console.log('配置默认已集成组件:');
-      console.log('  ✔ @momako-jam/hud (通用 HUD、开始菜单、暂停与设置弹层)');
-      console.log('  ✔ @momako-jam/core (跨边界 EventBus 与标准事件通信)');
+      console.log('  ✔ @momako/hud (通用 HUD、开始菜单、暂停与设置弹层)');
+      console.log('  ✔ @momako/core (跨边界 EventBus 与标准事件通信)');
       console.log('  ✔ 双语 i18n 系统 (zh-CN / en 结构校验)');
       console.log('  ✔ 音频与分辨率持久化存储 (Pinia persisted-state)');
       console.log('  ✔ AI Agent 协同样板 (AGENTS.md + spec.md)\n');

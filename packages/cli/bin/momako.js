@@ -22,8 +22,8 @@ if (!command || command === 'create') {
 Momako Game Jam Matrix CLI
 
 Usage:
-  npx momako-jam create [project-name] [options]
-  npm create momako-jam [project-name] [options]
+  npx momako create [project-name] [options]
+  npm create momako [project-name] [options]
 
 Commands:
   create [name]    Create a new game jam project interactively
@@ -33,5 +33,5 @@ Options:
   --help, -h       Show help information
   `);
 } else {
-  console.log(`Unknown command: "${command}". Try "momako-jam create [project-name]".`);
+  console.log(`Unknown command: "${command}". Try "momako create [project-name]".`);
 }
