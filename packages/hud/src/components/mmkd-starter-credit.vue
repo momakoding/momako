@@ -12,7 +12,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  repoUrl: 'https://github.com/momakoding/momako-jam',
+  repoUrl: 'https://github.com/momakoding/momako',
   technologies: () => [
     { label: 'Vue 3', url: 'https://vuejs.org' },
     { label: 'TypeScript', url: 'https://www.typescriptlang.org' },

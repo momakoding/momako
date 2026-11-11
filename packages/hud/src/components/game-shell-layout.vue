@@ -65,7 +65,7 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { Pause } from 'lucide-vue-next';
-import { useEventBus, EVENT_KEYS } from '@momako-jam/core';
+import { useEventBus, EVENT_KEYS } from '@momako/core';
 import GameButton from './game-button.vue';
 import SettingsPanel from './settings-panel.vue';
 

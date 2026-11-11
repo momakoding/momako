@@ -69,7 +69,7 @@
 import { computed, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import type { GameMeta, TeamInfo } from '@momako-jam/core';
+import type { GameMeta, TeamInfo } from '@momako/core';
 import GameButton from '../components/game-button.vue';
 import MmkdStarterCredit from '../components/mmkd-starter-credit.vue';
 import ScrollableContent from '../components/scrollable-content.vue';

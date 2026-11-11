@@ -1,5 +1,5 @@
 {
-  "name": "@momako-jam/hud",
+  "name": "@momako/hud",
   "version": "0.1.0",
   "type": "module",
   "main": "./src/index.ts",
@@ -12,7 +12,7 @@
     "build": "vue-tsc -b"
   },
   "dependencies": {
-    "@momako-jam/core": "workspace:*",
+    "@momako/core": "workspace:*",
     "@vueuse/core": "^14.1.0",
     "lucide-vue-next": "^0.553.0",
     "marked": "^18.0.2",

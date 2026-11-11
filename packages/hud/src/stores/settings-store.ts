@@ -5,7 +5,7 @@ import {
   type ResolutionSetting,
   type SettingsState,
   type GameResolution,
-} from '@momako-jam/core';
+} from '@momako/core';
 
 export { RESOLUTION_PRESETS, type Language, type ResolutionSetting, type SettingsState, type GameResolution };
 
