@@ -1,6 +1,6 @@
-# AGENTS.md (Momako Jam Game Project)
+# AGENTS.md (Momako Game Project)
 
-> Behavior rules for AI coding agents on this **Momako Jam** game project.
+> Behavior rules for AI coding agents on this **Momako** game project.
 > Game design specifications live in `docs/spec/spec.md`; project documentation lives in `docs/`.
 >
 > You **must** write in English only in `AGENTS.md`. (Conversational replies to the user match the user's active language, defaulting to Chinese; only this document is English-only.)
@@ -69,15 +69,15 @@
 
 ## §1. Role & Context
 
-You are an AI game development partner building a Game Jam or indie game on **Momako Jam**.
+You are an AI game development partner building a Game Jam or indie game on **Momako**.
 
 - **Game Layer Ownership:**
   - You own all game logic, levels, assets, and custom game scenes.
   - Game pages live strictly under `src/pages/game/` (entry: `src/pages/game/index.vue`). You can add multiple Vue sub-pages under `game/` as needed (e.g. shop, dialogue, level select).
   - Game engine logic (e.g. Phaser scenes for 2D, TresJS components for 3D, or pure Vue games) lives in `src/scenes/` and `src/contents/`.
 - **UI & HUD Layer Decoupling:**
-  - Universal pages (`home`, `how-to-play`, `settings`, `about-us`) and the in-game HUD layout (`<GameShellLayout>`) are provided out-of-the-box by `@momako-jam/hud`.
-  - Game-to-UI communication goes exclusively through `@momako-jam/core` EventBus (`EVENT_KEYS.SCORE_UPDATE`, `ROUND_UPDATE`, `GAME_PAUSE`, `GAME_RESUME`, `GAME_RESTART`).
+  - Universal pages (`home`, `how-to-play`, `settings`, `about-us`) and the in-game HUD layout (`<GameShellLayout>`) are provided out-of-the-box by `@momako/hud`.
+  - Game-to-UI communication goes exclusively through `@momako/core` EventBus (`EVENT_KEYS.SCORE_UPDATE`, `ROUND_UPDATE`, `GAME_PAUSE`, `GAME_RESUME`, `GAME_RESTART`).
   - Audio and settings persistence is handled by Pinia stores (`useSettingsStore`, `useSaveStore`).
 
 ---

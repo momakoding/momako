@@ -1,6 +1,6 @@
-# AGENTS.md (Momako Jam Monorepo)
+# AGENTS.md (Momako Monorepo)
 
-> Behavior rules for AI coding agents on **`momako-jam`** — a multi-engine Game Jam matrix and monorepo. This file records **rules only**; project facts — tech stack, architecture, workspace registry, module APIs — live in `CODEBASE_STATE.md` (see §9).
+> Behavior rules for AI coding agents on **`momako`** — a multi-engine Game Jam matrix and monorepo. This file records **rules only**; project facts — tech stack, architecture, workspace registry, module APIs — live in `CODEBASE_STATE.md` (see §9).
 >
 > You **must** write in English only in `AGENTS.md`. (Conversational replies to the user match the user's active language, defaulting to Chinese; only this document is English-only.)
 
@@ -96,18 +96,18 @@
 
 ## §1. Role & Context
 
-You are an AI core maintainer building **`momako-jam`** — a multi-engine Game Jam matrix and monorepo.
+You are an AI core maintainer building **`momako`** — a multi-engine Game Jam matrix and monorepo.
 
 - **Monorepo Architecture:**
-  - `packages/core` (`@momako-jam/core`): Game-agnostic, zero-dependency EventBus and shared event types.
-  - `packages/hud` (`@momako-jam/hud`): Vue 3 + Tailwind CSS v4 Universal Jam UI library. Owns universal pages (`home.vue`, `how-to-play.vue`, `settings.vue`, `about-us.vue`), layouts (`<GameShellLayout>`), modals, and stores.
-  - `packages/cli` (`@momako-jam/cli`): Scaffolding CLI for `npx momako-jam create`.
-  - `templates/er` (`momako-jam-er`): 2D Web Game Jam starter (Vue 3 + Phaser 4 / Pure Vue + HUD). Owns only game pages under `src/pages/game/` (starting with `game/index.vue`).
-  - `templates/san` (`momako-jam-san`): 3D Web Game Jam starter (Vue 3 + TresJS + HUD). Owns only game pages under `src/pages/game/` (starting with `game/index.vue`).
+  - `packages/core` (`@momako/core`): Game-agnostic, zero-dependency EventBus and shared event types.
+  - `packages/hud` (`@momako/hud`): Vue 3 + Tailwind CSS v4 Universal Jam UI library. Owns universal pages (`home.vue`, `how-to-play.vue`, `settings.vue`, `about-us.vue`), layouts (`<GameShellLayout>`), modals, and stores.
+  - `packages/cli` (`@momako/cli`): Scaffolding CLI for `npx momako create`.
+  - `templates/er` (`momako-er`): 2D Web Game Jam starter (Vue 3 + Phaser 4 / Pure Vue + HUD). Owns only game pages under `src/pages/game/` (starting with `game/index.vue`).
+  - `templates/san` (`momako-san`): 3D Web Game Jam starter (Vue 3 + TresJS + HUD). Owns only game pages under `src/pages/game/` (starting with `game/index.vue`).
   - `templates/godot`, `templates/unity`, `templates/unreal`: Native engine starter templates.
 - **Strict Boundary Decoupling:**
   - Templates own only game content pages under `src/pages/game/index.vue`.
-  - All universal Jam UI pages live in `@momako-jam/hud` and are imported into templates' routers.
+  - All universal Jam UI pages live in `@momako/hud` and are imported into templates' routers.
   - Framework maintainer docs live in root `docs/maintainer/` and `docs/DECISION_LOG.md`. User docs live inside each template's `docs/` (`onboarding/`, `guide/`, `spec/`).
   - **Two AGENTS files only:**
     - `AGENTS.md` (root): Dedicated to framework maintainers building this monorepo.
@@ -168,8 +168,8 @@ This project uses **Tailwind CSS v4** wired via `@tailwindcss/vite`.
 #### 2.3.3 State Management & Communication
 
 - Component-local state uses `ref` / `reactive`.
-- Cross-boundary game-to-UI events go exclusively through `@momako-jam/core` EventBus (`EVENT_KEYS`).
-- Persisted user settings go through Pinia stores in `@momako-jam/hud` (`useSettingsStore`, `useSaveStore`).
+- Cross-boundary game-to-UI events go exclusively through `@momako/core` EventBus (`EVENT_KEYS`).
+- Persisted user settings go through Pinia stores in `@momako/hud` (`useSettingsStore`, `useSaveStore`).
 
 ---
 
