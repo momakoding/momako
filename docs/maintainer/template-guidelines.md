@@ -1,6 +1,6 @@
 # 游戏引擎模板扩展指引 (Template Guidelines)
 
-> 供希望向 `momako-jam` 贡献新游戏引擎模板的维护者阅读。
+> 供希望向 `momako` 贡献新游戏引擎模板的维护者阅读。
 
 ---
 
@@ -9,8 +9,8 @@
 所有放入 `templates/` 的模板工程都必须遵守以下标准：
 
 1. **解耦通信标准**：
-   - Web 引擎模板（如 Phaser, Three.js, Babylon.js, Pixi.js, PlayCanvas）必须使用 `@momako-jam/core` 中的 `EVENT_KEYS` 传递游戏状态。
-   - 必须通过 `@momako-jam/hud` 提供的 `<GameShellLayout>` 挂载画布，确保暂停、设置和 HUD 状态条统一。
+   - Web 引擎模板（如 Phaser, Three.js, Babylon.js, Pixi.js, PlayCanvas）必须使用 `@momako/core` 中的 `EVENT_KEYS` 传递游戏状态。
+   - 必须通过 `@momako/hud` 提供的 `<GameShellLayout>` 挂载画布，确保暂停、设置和 HUD 状态条统一。
 
 2. **组件与文件命名**：
    - Vue 组件文件除了 `App.vue` 必须为 **kebab-case**（例如 `game-button.vue`, `home.vue`）。

@@ -1,10 +1,10 @@
 # CODEBASE_STATE.md
 
-> Living registry of everything that currently exists in the `momako-jam` Monorepo — tech stack, architecture, packages, and templates.
+> Living registry of everything that currently exists in the `momako` Monorepo — tech stack, architecture, packages, and templates.
 > Agent collaboration rules live in [`AGENTS.md`](./AGENTS.md), architecture history in [`docs/DECISION_LOG.md`](./docs/DECISION_LOG.md).
 
 **Current scaffold status:** *Monorepo initialized; core, hud, phaser, san, and cli operational.*
-**Last updated:** 2026-11-11 12:33
+**Last updated:** 2026-11-11 18:46
 
 ---
 
@@ -13,17 +13,17 @@
 ```mermaid
 flowchart TB
     subgraph CLI["CLI Scaffolder"]
-        Bin["packages/cli (momako-jam create)"]
+        Bin["packages/cli (momako create)"]
     end
 
     subgraph Core["Universal Core Layer"]
-        PkgCore["@momako-jam/core (EventBus, events, shared types)"]
-        PkgHud["@momako-jam/hud (Vue 3 HUD, modals, settings, theme, i18n)"]
+        PkgCore["@momako/core (EventBus, events, shared types)"]
+        PkgHud["@momako/hud (Vue 3 HUD, modals, settings, theme, i18n)"]
     end
 
     subgraph Templates["Game Starters"]
-        Er["templates/er (momako-jam-er: 2D Web / Vue 3 + Phaser / 纯 Vue)"]
-        San["templates/san (momako-jam-san: 3D Web)"]
+        Er["templates/er (momako-er: 2D Web / Vue 3 + Phaser / 纯 Vue)"]
+        San["templates/san (momako-san: 3D Web)"]
         Godot["templates/godot (Godot 4.x starter)"]
         Unity["templates/unity (Unity WebGL starter)"]
         Unreal["templates/unreal (UE5 starter)"]
@@ -40,14 +40,14 @@ flowchart TB
 
 | Path | Package Name | Role | Tech Stack | Status |
 |---|---|---|---|---|
-| `packages/core` | `@momako-jam/core` | 跨端事件总线、事件定义与元数据接口 | TypeScript (Zero-dep) | ✅ Built |
-| `packages/hud` | `@momako-jam/hud` | 通用 Game Jam UI 库 (组件/Modal/Layout/Store/多语言，提供通用的 home, how-to-play, settings, about-us 页面) | Vue 3, Tailwind v4, Pinia, vue-i18n | ✅ Built |
-| `packages/cli` | `@momako-jam/cli` | 极速脚手架 CLI (`npx momako-jam create`) | Node.js ESM | ✅ Functional |
-| `templates/er` | `momako-jam-er` | 2D Web 游戏脚手架 (Vue 3 + Phaser 4 / 纯 Vue + HUD，仅包含 pages/game/index.vue) | Vue 3 + Phaser 4 / Vue + HUD | ✅ Built |
-| `templates/san` | `momako-jam-san` | 3D Web 游戏脚手架 (声明式 TresJS + HUD，仅包含 pages/game/index.vue) | Vue 3 + TresJS + HUD | ✅ Built |
-| `templates/godot` | `momako-jam-godot` | Godot 4 开箱即用工程与 itch.io 预设 | Godot 4.x, GDScript | ✅ Spec ready |
-| `templates/unity` | `momako-jam-unity` | Unity 6 / 2022+ WebGL 响应式模板 | Unity 6, C# | ✅ Spec ready |
-| `templates/unreal` | `momako-jam-unreal` | Unreal Engine 5 Jam 极速原型模板 | UE5, Blueprints | ✅ Spec ready |
+| `packages/core` | `@momako/core` | 跨端事件总线、事件定义与元数据接口 | TypeScript (Zero-dep) | ✅ Built |
+| `packages/hud` | `@momako/hud` | 通用 Game Jam UI 库 (组件/Modal/Layout/Store/多语言，提供通用的 home, how-to-play, settings, about-us 页面) | Vue 3, Tailwind v4, Pinia, vue-i18n | ✅ Built |
+| `packages/cli` | `@momako/cli` | 极速脚手架 CLI (`npx momako create`) | Node.js ESM | ✅ Functional |
+| `templates/er` | `momako-er` | 2D Web 游戏脚手架 (Vue 3 + Phaser 4 / 纯 Vue + HUD，仅包含 pages/game/index.vue) | Vue 3 + Phaser 4 / Vue + HUD | ✅ Built |
+| `templates/san` | `momako-san` | 3D Web 游戏脚手架 (声明式 TresJS + HUD，仅包含 pages/game/index.vue) | Vue 3 + TresJS + HUD | ✅ Built |
+| `templates/godot` | `momako-godot` | Godot 4 开箱即用工程与 itch.io 预设 | Godot 4.x, GDScript | ✅ Spec ready |
+| `templates/unity` | `momako-unity` | Unity 6 / 2022+ WebGL 响应式模板 | Unity 6, C# | ✅ Spec ready |
+| `templates/unreal` | `momako-unreal` | Unreal Engine 5 Jam 极速原型模板 | UE5, Blueprints | ✅ Spec ready |
 
 ---
 
@@ -67,6 +67,28 @@ flowchart TB
 ## 4. Layering & Communication Standards
 
 1. **`packages/core`** 是底层纯逻辑库，不依赖任何 UI 框架或具体游戏引擎。
-2. **`packages/hud`** 是通用 UI 库，依赖 `@momako-jam/core`，不依赖任何游戏引擎（无论 Phaser 还是 Three.js）。
-3. **`templates/*`** 游戏模板引用 `@momako-jam/core` 与 `@momako-jam/hud`，通过 `EVENT_KEYS` 进行双向解耦通信。
+2. **`packages/hud`** 是通用 UI 库，依赖 `@momako/core`，不依赖任何游戏引擎（无论 Phaser 还是 Three.js）。
+3. **`templates/*`** 游戏模板引用 `@momako/core` 与 `@momako/hud`，通过 `EVENT_KEYS` 进行双向解耦通信。
 4. **`packages/cli`** 负责将 `templates/*` 以及可选包复制生成为独立可交付工程。
+
+---
+
+## 5. Web Template Layout (`templates/er`, `templates/san`)
+
+Both web templates share one domain-module skeleton. Dependency direction is `router → modules → shared`; `shared` never imports `modules`; modules reach each other only through their `index.ts` barrel.
+
+```
+src/
+├── main.ts  App.vue  style.css
+├── router/index.ts
+├── modules/
+│   ├── game/                 gameplay domain (owns its own pages/components/scenes/assets)
+│   │   ├── index.ts          barrel (GamePage)
+│   │   ├── pages/index.vue
+│   │   ├── scenes/           er: Phaser scenes (.ts) · san: Tres scene (main-scene.vue)
+│   │   └── components/       san only: ground-grid, player-cube, star-item
+│   └── meta-info/            game/team/hud text per locale, how-to-play, OSS credits
+└── shared/
+    ├── engine/               er only: GameShell around Phaser.Game
+    └── runtime/              useGame() session state and EventBus wiring
+```

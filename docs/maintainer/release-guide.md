@@ -18,10 +18,10 @@
 ## 2. 发布检查清单
 
 1. 运行 `pnpm -r build` 确保所有 Package 与 Template 编译无误。
-2. 运行 `node packages/cli/bin/momako-jam.js create _smoke_test --template phaser` 进行端到端冒烟测试。
+2. 运行脚手架生成测试工程验证：`node packages/cli/bin/momako.js create _smoke_test --template er`。
 3. 清理测试产物。
 4. 在 `docs/DECISION_LOG.md` 记录重大架构调整。
-5. 发布 `@momako-jam/cli` 至 npm：
+5. 发布 `@momako/cli` 至 npm：
    ```bash
    cd packages/cli
    pnpm publish --access public
