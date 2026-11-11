@@ -83,7 +83,7 @@ Just `grep` the actual tree by agent when needed.
 
 ### `src/` layer map
 
-The project follows a Unity-style layout. **Import direction is one-way: `router → pages → scenes → shared`.** `pages/` is the Vue world and `scenes/` is the Phaser world; the two talk only through the EventBus contract in `shared/runtime/event-keys.ts`. The normative import rules live in `AGENTS.md` ("Layering & Import Rules").
+The project follows a Unity-style layout. **Import direction is one-way: `router → pages → scenes → shared`.** `pages/` is the Vue world and `scenes/` is the Phaser world; the two talk only through EventBus events in `shared/runtime/event-keys.ts`. The normative import rules live in `AGENTS.md` ("Layering & Import Rules").
 
 | Directory | Layer | Role |
 |---|---|---|
@@ -91,7 +91,7 @@ The project follows a Unity-style layout. **Import direction is one-way: `router
 | `src/scenes/` | Phaser world | Every `Phaser.Scene` (boot, gameplay levels, game-over) plus `constants.ts` (`SCENE_KEYS`, `GAME_CONFIG`, tuning values), `types.ts`, and `platform-chain.ts` (jump-reachability map generator) |
 | `src/stores/` | Pinia stores | Cross-page persisted state (`settings-store.ts`, `save-store.ts`). Vue world only — scenes reach saves via EventBus |
 | `src/shared/engine/` | Engine | UI-agnostic, **game-agnostic** thin wrappers around Phaser (`GameShell`, `GameEventBus`, `SHELL_DEFAULTS`, `EventCallback`). Unchanged when swapping games |
-| `src/shared/runtime/` | Runtime glue | Module-level Vue-side singletons (`useGame()` / `useEventBus()`), the Vue ↔ Phaser event contract (`event-keys.ts` → `EVENT_KEYS`), and the vue-i18n instance + locale dictionaries (`i18n/`). Holds no game data |
+| `src/shared/runtime/` | Runtime glue | Module-level Vue-side singletons (`useGame()` / `useEventBus()`), the Vue ↔ Phaser event keys (`event-keys.ts` → `EVENT_KEYS`), and the vue-i18n instance + locale dictionaries (`i18n/`). Holds no game data |
 | `src/shared/ui/` | UI primitives | Globally reusable buttons, tags, panels, HUD widgets, scrollable content |
 | `src/shared/meta-info/` | Player-facing content | Single source of truth for all player-visible copy, per-locale (see below) |
 | `src/shared/assets/` | Static assets | Images and icons referenced by code |

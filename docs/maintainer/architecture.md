@@ -11,20 +11,20 @@ flowchart TB
     CLI["packages/cli<br/>(momako-jam create)"]
 
     subgraph CoreLayer["框架基建层"]
-        Core["@momako-jam/core<br/>- EventBus 单例<br/>- EVENT_KEYS 事件契约<br/>- 跨端公用接口"]
+        Core["@momako-jam/core<br/>- EventBus 单例<br/>- EVENT_KEYS 事件常量<br/>- 跨端公用接口"]
         HUD["@momako-jam/hud<br/>- GameShellLayout 挂载容器<br/>- 菜单/设置/玩法/鸣谢组件<br/>- Pinia 存档与音频/分辨率存储<br/>- vue-i18n 多语言骨架"]
     end
 
     subgraph Templates["模板层"]
-        Phaser["templates/phaser (2D)"]
-        San["templates/san (3D)"]
+        Er["templates/er (2D Web)"]
+        San["templates/san (3D Web)"]
         Godot["templates/godot"]
         Unity["templates/unity"]
         Unreal["templates/unreal"]
     end
 
     CLI -->|拷贝并重命名| Templates
-    Phaser --> Core & HUD
+    Er --> Core & HUD
     San --> Core & HUD
 ```
 
@@ -36,7 +36,7 @@ flowchart TB
 - **定位**：零依赖纯 TypeScript 基础层。
 - **职责**：
   - `GameEventBus`：基于浏览器事件或自建发布订阅机制，解耦 Game Canvas 与 Vue UI。
-  - `EVENT_KEYS`：唯一事件源契约（`score:update`, `round:update`, `game:pause`, `game:resume`, `game:restart`, `game:over`）。
+  - `EVENT_KEYS`：统一事件定义（`score:update`, `round:update`, `game:pause`, `game:resume`, `game:restart`, `game:over`）。
   - 通用接口：`GameMeta`, `TeamInfo`, `SettingsState`, `GameResolution`。
 - **红线**：禁止 import 任何 Vue 组件或特定引擎（Phaser / Three.js）类型。
 

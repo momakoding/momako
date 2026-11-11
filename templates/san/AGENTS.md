@@ -3,7 +3,7 @@
 > Behavior rules for AI coding agents on this **Momako Jam 3D (San)** game project.
 > Game design specifications live in `docs/spec/spec.md`; architectural choices live in `docs/DECISION_LOG.md`.
 >
-> You **must** write in English only in `AGENTS.md`. (Conversational replies to the user stay in Chinese; only this document is English-only.)
+> You **must** write in English only in `AGENTS.md`. (Conversational replies to the user match the user's active language, defaulting to Chinese; only this document is English-only.)
 
 ---
 
@@ -25,9 +25,9 @@
   - Scope: optional, e.g. `(game)`, `(player)`, `(camera)`, `(3d)`, `(hud)`.
   - Description: imperative mood, lowercase, no trailing period.
 - **Atomic commits.** Each commit must represent one cohesive, self-contained change.
-- When the user asks for a commit, **confirm the message and scope before executing.** Every commit must pass the confirmation gate in 0.6.
+- When the user asks for a commit, **confirm the message and scope before executing.** Every commit must pass the pre-commit review confirmation in 0.6.
 
-### 0.3 The Contract
+### 0.3 Collaboration Lifecycle
 
 1. **Before coding**, read `docs/spec/spec.md` for gameplay rules and mechanics.
 2. **While coding**, the canonical registry of truth is the code itself and `docs/spec/spec.md`.
@@ -37,17 +37,18 @@
    - If non-obvious architecture or gameplay decisions were made, append a row to `docs/DECISION_LOG.md`.
    - Update `docs/spec/spec.md` with new features, controls, or 3D scene mechanisms.
 
-### 0.6 Commit Confirmation Gate
+### 0.6 Pre-Commit Review Confirmation
 
 - **Before executing any `git commit`, ask the user for review confirmation via the interactive question-asking tool.**
-- Question format:
+- Present the confirmation question and choices translated into the user's active conversational language.
+- Question template (in the user's language, e.g. Chinese):
   ```
   该提交通过吗：
   {{commit message including body}}
 
-  描述：{{short Chinese description of the change}}
+  描述：{{short description of the change in user language}}
   ```
-- Options: `通过`, `不通过，暂缓提交`, `不通过，原因是`. Never commit without an explicit `通过` answer.
+- Options: `通过` / `Approve`, `不通过，暂缓提交` / `Reject, defer commit`, `不通过，原因是` / `Reject with reason:`. Never commit without an explicit affirmative approval answer.
 
 ---
 
@@ -102,13 +103,19 @@ You are an AI game development partner building a 3D Game Jam game using the **M
 
 ## §4. Skills
 
-Recommended skills for this project:
+### 4.1 Multi-Agent Skill Discovery Architecture
+- **Common Root**: `.agents/skills/<name>/SKILL.md` (portable across agents).
+- **Agent Deployment**: Synchronize into active agent directory (e.g. `.claude/skills/`, `~/.gemini/config/skills/`, `.kilo/skills/`).
 
-1. **`humanizer`** (`https://github.com/blader/humanizer`)
-   - Install: `npx skills add https://github.com/blader/humanizer.git`
-2. **`humanizer-zh`** (`https://github.com/op7418/Humanizer-zh`)
+### 4.2 Essential Runtime Skills
+1. **`humanizer-zh`** (`https://github.com/op7418/Humanizer-zh`):
+   - Naturalizes Chinese game copy, dialogue, and documentation.
    - Install: `npx skills add https://github.com/op7418/Humanizer-zh.git`
-3. **`changelog-principle`** (`https://github.com/NBDatsuya/changelog-principle`)
+2. **`humanizer`** (`https://github.com/blader/humanizer`):
+   - De-slops English documentation and commit messages.
+   - Install: `npx skills add https://github.com/blader/humanizer.git`
+3. **`changelog-principle`** (`https://github.com/NBDatsuya/changelog-principle`):
+   - Enforces reader-facing Keep a Changelog 1.1.0 entries.
    - Install: `npx skills add NBDatsuya/changelog-principle -g -y`
 
 ---

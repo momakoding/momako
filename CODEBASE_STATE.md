@@ -17,7 +17,7 @@ flowchart TB
     end
 
     subgraph Core["Universal Core Layer"]
-        PkgCore["@momako-jam/core (EventBus, contracts, shared types)"]
+        PkgCore["@momako-jam/core (EventBus, events, shared types)"]
         PkgHud["@momako-jam/hud (Vue 3 HUD, modals, settings, theme, i18n)"]
     end
 
@@ -40,7 +40,7 @@ flowchart TB
 
 | Path | Package Name | Role | Tech Stack | Status |
 |---|---|---|---|---|
-| `packages/core` | `@momako-jam/core` | 跨端事件总线契约、元数据接口 | TypeScript (Zero-dep) | ✅ Built |
+| `packages/core` | `@momako-jam/core` | 跨端事件总线、事件定义与元数据接口 | TypeScript (Zero-dep) | ✅ Built |
 | `packages/hud` | `@momako-jam/hud` | 通用 Game Jam UI 库 (组件/Modal/Layout/Store/多语言，提供通用的 home, how-to-play, settings, about-us 页面) | Vue 3, Tailwind v4, Pinia, vue-i18n | ✅ Built |
 | `packages/cli` | `@momako-jam/cli` | 极速脚手架 CLI (`npx momako-jam create`) | Node.js ESM | ✅ Functional |
 | `templates/er` | `momako-jam-er` | 2D Web 游戏脚手架 (Vue 3 + Phaser 4 / 纯 Vue + HUD，仅包含 pages/game/index.vue) | Vue 3 + Phaser 4 / Vue + HUD | ✅ Built |
@@ -64,7 +64,7 @@ flowchart TB
 
 ---
 
-## 4. Layering & Contract Rules
+## 4. Layering & Communication Standards
 
 1. **`packages/core`** 是底层纯逻辑库，不依赖任何 UI 框架或具体游戏引擎。
 2. **`packages/hud`** 是通用 UI 库，依赖 `@momako-jam/core`，不依赖任何游戏引擎（无论 Phaser 还是 Three.js）。

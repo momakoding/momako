@@ -2,7 +2,7 @@
 
 > Behavior rules for AI coding agents on **`momako-jam`** — a multi-engine Game Jam matrix and monorepo. This file records **rules only**; project facts — tech stack, architecture, workspace registry, module APIs — live in `CODEBASE_STATE.md` (see §9).
 >
-> You **must** write in English only in `AGENTS.md`. (Conversational replies to the user stay in Chinese; only this document is English-only.)
+> You **must** write in English only in `AGENTS.md`. (Conversational replies to the user match the user's active language, defaulting to Chinese; only this document is English-only.)
 
 ---
 
@@ -25,7 +25,7 @@
 
     | Type | Definition | When to use |
     |---|---|---|
-    | `feat` | A new feature or capability for framework users or game developers. | Adding a new HUD modal, a new CLI template engine, a new EventBus contract. |
+    | `feat` | A new feature or capability for framework users or game developers. | Adding a new HUD modal, a new CLI template engine, a new EventBus event. |
     | `fix` | A bug fix — something was broken, now it works. | Fixing a build error, a runtime crash, a broken responsive layout. |
     | `refactor` | Code restructuring that changes no external behavior. | Extracting a composable, restructuring internal packages, moving files. |
     | `style` | Formatting-only changes — whitespace, semicolons, indentation, linting. **No logic changes at all.** | Running Prettier, fixing indentation. If any runtime value changes, it is NOT style. |
@@ -42,10 +42,10 @@
 - **Body: lead-in sentence + dense bullets.** Non-trivial changes carry a body: a one-line lead-in summarizing the change, then one bullet per area. Bullets explain **mechanisms and design decisions** — how it works, which trade-offs were made and why, what was deferred and where the deferral is recorded — not a file inventory. Wrap at ~72 columns.
 - **Never add co-author trailers** (e.g. `Co-authored-by: ...`) to commit messages.
 - **Atomic commits.** Each commit must represent one cohesive, self-contained logical change. Do not bundle unrelated fixes, refactors, or features into the same commit; split when changes touch independent areas.
-- When the user asks for a commit, **confirm the message and scope before executing.** Every commit must pass the confirmation gate in 0.6.
-- **Commit status reporting.** When committing, focus only on this session's changes — files outside this session's scope are neither inspected nor mentioned. If a conflict appears, report the conflict itself. The post-commit report states exactly: 「本对话涉及到的文件已经全部提交，且不涉及冲突」 when clean, or 「本对话涉及到的文件已经全部提交，但目前出现了冲突」 when conflicts exist. Never enumerate other pending working-tree changes in the report.
+- When the user asks for a commit, **confirm the message and scope before executing.** Every commit must pass the pre-commit review confirmation in 0.6.
+- **Commit status reporting.** When committing, focus only on this session's changes — files outside this session's scope are neither inspected nor mentioned. If a conflict appears, report the conflict itself. The post-commit report states clearly in the user's active conversational language: "All files touched in this conversation have been committed without conflicts" when clean, or "All files touched in this conversation have been committed, but conflicts occurred in [paths]" when conflicts exist. Never enumerate other pending working-tree changes in the report.
 
-### 0.3 The Contract
+### 0.3 Collaboration Lifecycle
 
 1. **Before coding**, skim §1–§7 once per session, then read `CODEBASE_STATE.md` and `docs/WIP.md` for anything relevant to your task.
 2. **While coding**, the canonical registry of names is the **code itself** — and `docs/maintainer/` for architectural intent. Before adding a new export / package / component name, confirm it doesn't already exist.
@@ -75,21 +75,23 @@
 - [ ] If a relevant decision exists in `docs/DECISION_LOG.md`, follow it; if your approach contradicts one, raise it in chat before re-deciding.
 - [ ] Remember: do NOT edit any docs in this turn. Save doc updates for when the user asks.
 
-### 0.6 Commit Confirmation Gate
+### 0.6 Pre-Commit Review Confirmation
 
-- **Before executing any `git commit`, ask the user for review confirmation via the built-in question-asking tool.** Batch all commits into one call when multiple commits are proposed.
-- Each question follows this format (preserve line breaks exactly):
+- **Before executing any `git commit`, ask the user for review confirmation via the interactive question-asking tool.** Batch all commits into one call when multiple commits are proposed.
+- Present the confirmation question and choices translated into the user's active conversational language.
+- Question format (in the user's language, e.g. Chinese):
   ```
   该提交通过吗：
   {{commit message including body}}
 
-  描述：{{short Chinese description of the change}}
+  描述：{{short description of the change in user language}}
   ```
-- Options per question (exact labels, in this order):
-  1. `通过` — confirmation given; proceed with the commit.
-  2. `不通过，暂缓提交` — rejected; do not commit, leave changes staged/unstaged as they are.
-  3. `不通过，原因是` — rejected with a reason; let the user type the reason, then address feedback before re-proposing.
-- Never commit without an explicit `通过` answer.
+  (Or in English if conversing in English: `Does this commit pass review:\n{{commit message}}\n\nDescription: {{short description}}`).
+- Options per question (translated into user's language, e.g. in Chinese / English):
+  1. `通过` / `Approve` — confirmation given; proceed with the commit.
+  2. `不通过，暂缓提交` / `Reject, defer commit` — rejected; do not commit, leave changes staged/unstaged as they are.
+  3. `不通过，原因是` / `Reject with reason:` — rejected with a reason; let the user provide the reason, then address feedback before re-proposing.
+- Never commit without an explicit affirmative approval answer (`通过` / `Approve`).
 
 ---
 
@@ -98,7 +100,7 @@
 You are an AI core maintainer building **`momako-jam`** — a multi-engine Game Jam matrix and monorepo.
 
 - **Monorepo Architecture:**
-  - `packages/core` (`@momako-jam/core`): Game-agnostic, zero-dependency EventBus and contract types.
+  - `packages/core` (`@momako-jam/core`): Game-agnostic, zero-dependency EventBus and shared event types.
   - `packages/hud` (`@momako-jam/hud`): Vue 3 + Tailwind CSS v4 Universal Jam UI library. Owns universal pages (`home.vue`, `how-to-play.vue`, `settings.vue`, `about-us.vue`), layouts (`<GameShellLayout>`), modals, and stores.
   - `packages/cli` (`@momako-jam/cli`): Scaffolding CLI for `npx momako-jam create`.
   - `templates/er` (`momako-jam-er`): 2D Web Game Jam starter (Vue 3 + Phaser 4 / Pure Vue + HUD). Owns only game pages under `src/pages/game/` (starting with `game/index.vue`).
@@ -161,7 +163,7 @@ This project uses **Tailwind CSS v4** wired via `@tailwindcss/vite`.
 - **Throwaway / rendered markup → inline utilities.**
 - **Tokens and Utilities:** Reusable tokens belong under `@theme` in `packages/hud/src/styles/hud.css`; reusable utilities belong under `@utility`.
 
-#### 2.3.3 State Management & Contracts
+#### 2.3.3 State Management & Communication
 
 - Component-local state uses `ref` / `reactive`.
 - Cross-boundary game-to-UI events go exclusively through `@momako-jam/core` EventBus (`EVENT_KEYS`).
@@ -213,17 +215,36 @@ This project uses **Tailwind CSS v4** wired via `@tailwindcss/vite`.
 
 ## §6. Skills
 
-Skills enhance agent capabilities. Recommended skills for this codebase:
+### 6.1 Multi-Agent Skill Loading Architecture
 
-1. **`humanizer`** (`https://github.com/blader/humanizer`)
-   - Removes AI writing tells from English prose and documentation.
-   - Install: `npx skills add https://github.com/blader/humanizer.git`
-2. **`humanizer-zh`** (`https://github.com/op7418/Humanizer-zh`)
-   - Polishes Chinese documentation and copy, removing boilerplate while preserving facts and tone.
-   - Install: `npx skills add https://github.com/op7418/Humanizer-zh.git`
-3. **`changelog-principle`** (`https://github.com/NBDatsuya/changelog-principle`)
-   - Enforces user-facing net-result changelogs following Keep a Changelog 1.1.0 principles.
-   - Install: `npx skills add NBDatsuya/changelog-principle -g -y`
+Skills provide domain-specific procedures and standards across different AI agent tooling:
+
+1. **Vendor-Neutral Common Root (`.agents/skills/`)**:
+   - The canonical source of truth for all project skills lives under `.agents/skills/<name>/SKILL.md`.
+2. **Agent-Specific Discovery Paths**:
+   - Different AI coding agents discover skills from their respective configuration locations:
+     - **Claude Code**: `.claude/skills/<name>/SKILL.md` (or global `~/.claude/skills/`)
+     - **Antigravity / Gemini CLI**: Builtin / config discovery (`~/.gemini/config/skills/`, `<appDataDir>/skills/`)
+     - **Kilo Code / Cline**: `.kilo/skills/<name>/SKILL.md` or `.cline/skills/<name>/SKILL.md`
+     - **Common / Multi-Agent**: `.agents/skills/<name>/SKILL.md`
+   - When deploying to an agent environment, skills in `.agents/skills/` are synchronized into the active agent's native discovery directory so they load automatically without manual document reading.
+
+### 6.2 Essential Runtime Skills (Must Load at Runtime)
+
+The following skills are **strongly recommended and must be loaded during matching execution**:
+
+1. **`humanizer-zh`** (Chinese Prose & Documentation Naturalizer)
+   - **When to load**: Any session communicating in Chinese or authoring Chinese docs/copy. Removes robotic AI filler, templates, and artificial phrasing while strictly preserving technical facts, tone, and author voice.
+   - **Source**: `https://github.com/op7418/Humanizer-zh`
+   - **Install**: `npx skills add https://github.com/op7418/Humanizer-zh.git`
+2. **`humanizer`** (English Prose De-slopping)
+   - **When to load**: When drafting English documentation, guides, or commit messages. Eliminates generic AI tells (not-X-but-Y contrasts, forced triads, inflated claims).
+   - **Source**: `https://github.com/blader/humanizer`
+   - **Install**: `npx skills add https://github.com/blader/humanizer.git`
+3. **`changelog-principle`** (Keep a Changelog 1.1.0 Net-Result Guard)
+   - **When to load**: Whenever writing, updating, or reviewing `CHANGELOG` entries (including step 1 of `CCC` / `3C`). Enforces reader-observable net results instead of raw git commit logs or developer diaries.
+   - **Source**: `https://github.com/NBDatsuya/changelog-principle`
+   - **Install**: `npx skills add NBDatsuya/changelog-principle -g -y`
 
 ---
 
