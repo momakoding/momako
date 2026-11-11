@@ -4,7 +4,7 @@
 > Agent collaboration rules live in [`AGENTS.md`](./AGENTS.md), architecture history in [`docs/DECISION_LOG.md`](./docs/DECISION_LOG.md).
 
 **Current scaffold status:** *Monorepo initialized; core, hud, phaser, san, and cli operational.*
-**Last updated:** 2026-11-11 18:46
+**Last updated:** 2026-11-11 22:30
 
 ---
 
@@ -42,7 +42,8 @@ flowchart TB
 |---|---|---|---|---|
 | `packages/core` | `@momako/core` | 跨端事件总线、事件定义与元数据接口 | TypeScript (Zero-dep) | ✅ Built |
 | `packages/hud` | `@momako/hud` | 通用 Game Jam UI 库 (组件/Modal/Layout/Store/多语言，提供通用的 home, how-to-play, settings, about-us 页面) | Vue 3, Tailwind v4, Pinia, vue-i18n | ✅ Built |
-| `packages/cli` | `@momako/cli` | 极速脚手架 CLI (`npx momako create`) | Node.js ESM | ✅ Functional |
+| `packages/cli` | `momako` | 脚手架 CLI (`npx momako create`)，支持 en / zh / ru / sh 输出，随包携带模板 | Node.js ESM | ✅ Functional |
+| `packages/create-momako` | `create-momako` | `npm create momako` 转发包，调用 `momako` | Node.js ESM | ✅ Functional |
 | `templates/er` | `momako-er` | 2D Web 游戏脚手架 (Vue 3 + Phaser 4 / 纯 Vue + HUD，仅包含 pages/game/index.vue) | Vue 3 + Phaser 4 / Vue + HUD | ✅ Built |
 | `templates/san` | `momako-san` | 3D Web 游戏脚手架 (声明式 TresJS + HUD，仅包含 pages/game/index.vue) | Vue 3 + TresJS + HUD | ✅ Built |
 | `templates/godot` | `momako-godot` | Godot 4 开箱即用工程与 itch.io 预设 | Godot 4.x, GDScript | ✅ Spec ready |

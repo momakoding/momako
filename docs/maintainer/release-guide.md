@@ -18,11 +18,14 @@
 ## 2. 发布检查清单
 
 1. 运行 `pnpm -r build` 确保所有 Package 与 Template 编译无误。
-2. 运行脚手架生成测试工程验证：`node packages/cli/bin/momako.js create _smoke_test --template er`。
+2. 运行脚手架生成测试工程验证：`node packages/cli/bin/momako.js create _smoke_test --template er --yes`。
 3. 清理测试产物。
 4. 在 `docs/DECISION_LOG.md` 记录重大架构调整。
-5. 发布 `@momako/cli` 至 npm：
+5. 运行 `pnpm test:cli`，确认脚手架测试通过。
+6. 按顺序发布到 npm（`create-momako` 依赖 `momako`，须后发布）：
    ```bash
-   cd packages/cli
-   pnpm publish --access public
+   pnpm --filter @momako/core publish --access public
+   pnpm --filter @momako/hud publish --access public
+   pnpm --filter momako publish --access public
+   pnpm --filter create-momako publish --access public
    ```

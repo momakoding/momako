@@ -51,7 +51,9 @@ flowchart TB
   - Template 引用：**在 Vue 模板中一律使用 PascalCase**（如 `<GameButton>`, `<GameShellLayout>`, `<SettingsPanel>`）。
   - Page 命名：**根页面不加冗余后缀**（如 `home.vue`, `settings.vue`，严禁 `home-page.vue`）。
 
-### `@momako/cli`
-- **定位**：面向开发者的工程生成工具。
-- **命令**：`momako create [projectName]` / `create-momako [projectName]`。
-- **职责**：交互式询问用户引擎偏好，递归复制目标模板，重写目标项目的 `package.json` 中的 `name`，并初始化 Git。
+### `momako`（`packages/cli`）与 `create-momako`
+- **定位**：面向开发者的工程生成工具，以无作用域包 `momako` 发布；`create-momako` 是转发到它的薄包装，使 `npm create momako` 可用。
+- **命令**：`momako create [name] [-t <id>] [-y] [-f] [--no-git] [--lang <code>]`。
+- **职责**：询问项目名与引擎，递归复制模板，重写 `package.json`（名称、版本，并把 `workspace:*` 换成已发布版本）与 `tsconfig.json`（展开仓库根配置、去掉 `@momako/*` 路径），写入 `.gitignore` 与 `AGENTS.md`，并初始化 Git。
+- **打包**：`prepack` 把 `templates/*`、`_AGENTS.md`、根 `tsconfig.base.json` 与 core/hud 版本号拷入包内，`postpack` 清理。
+- **多语言**：输出支持 `en`、`zh`、`ru`、`sh`，依次按 `--lang`、`MOMAKO_LANG`、系统语言环境选择，缺失词条回退到英文。

@@ -6,7 +6,7 @@
 >
 > **Discipline:** new rows are appended at the bottom, one row per decision, timestamped `YYYY-MM-DD;HH:MM`. Never edit or delete past rows — if a later decision supersedes an earlier one, say so in the new row's text. Rows are added during user-initiated doc syncs, never in the same turn as feature code.
 
-*Last updated: 2026-11-11 18:46.*
+*Last updated: 2026-11-11 22:30.*
 
 | Date | Decision | Rationale |
 |---|---|---|
@@ -49,3 +49,7 @@
 | 2026-11-11;13:40 | 去除脱离实际的“契约/门禁”用语，`packages/core` 目录从 `contracts/` 迁移至 `events/`；确立多 Agent 技能加载规范与运行时必备技能 | 避免官僚化术语影响开发者心智，以直观事件定义取代“契约”；建立由 `.agents/skills/` 派发到各 Agent 配置目录的多工具链方案，并强制在会话中挂载 `humanizer-zh`、`humanizer` 与 `changelog-principle`，确保技术严谨度与表达自然质感 |
 | 2026-11-11;18:40 | Web templates (	emplates/er, 	emplates/san) adopt domain modules: src/modules/<domain>/ (each owns its pages/, components/, scenes/, ssets/, exposed only through its index.ts) plus src/shared/ for cross-module code (ngine/, untime/); meta-info becomes its own module; dependency direction is outer → modules → shared, shared never imports modules, and modules reach each other only through barrels. san's single-file game is split into a thin page, a scene component, small Tres components and a Tres-free shared/runtime/useGame() | Supersedes the 2026-08-26 removal of the shared/ layer and the 2026-11-11;13:08 pages/game/index.vue-only rule: domain slicing keeps growth local to one module instead of widening flat pages/ and scenes/ folders, and shared/ stays small because stores, UI and EventBus already live in @momako/hud and @momako/core. Both templates now share one skeleton, so a game can switch engines without relearning the layout |
 | 2026-11-11;18:46 | Project name shortened from momako-jam to momako everywhere: packages @momako/{core,hud,cli}, templates momako-{er,san,godot,unity,unreal}, CLI command momako create, display name Momako | The -jam suffix repeated the Game Jam context already stated in descriptions and made package scopes and commands longer; supersedes the @momako-jam/* names recorded in earlier rows |
+| 2026-11-11;22:30 | The scaffolder is published as the unscoped package momako plus a thin create-momako forwarder (no @momako/cli); templates, _AGENTS.md, the base tsconfig and core/hud versions are copied into the package at prepack; at generation time workspace:* ranges become ^<version>, the repo-level tsconfig xtends is inlined and a .gitignore is written; CLI output is localized (n, zh, u, sh) through plain message catalogs with English fallback and no i18n dependency | Supersedes the @momako/cli name in the 2026-11-11;12:15 row: 
+px momako and 
+pm create momako resolve only to unscoped momako / create-momako packages. Generated projects would otherwise fail on workspace:*, a tsconfig that extends a file outside the project and an untracked 
+ode_modules. Catalogs keep the zero-dependency CLI small, and a test enforces identical key and placeholder sets across locales |
