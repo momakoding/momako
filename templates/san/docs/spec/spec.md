@@ -1,6 +1,6 @@
 # 你的游戏SPEC - Your game SPEC
 
-> 由Agents根据你的想法自动编写，然后逐步实现
+> 由开发助手根据游戏设计需求编写与迭代
 
 ## 当前实现（摘星星 / Picking Stars）
 

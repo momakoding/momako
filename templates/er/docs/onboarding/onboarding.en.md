@@ -1,4 +1,4 @@
-# Momako Jam Onboarding Guide (English)
+# Momako Onboarding Guide (English)
 
 > This guide is for **game designers, product managers, artists, and anyone with a game idea** who wants to prototype without writing boilerplate from scratch.
 

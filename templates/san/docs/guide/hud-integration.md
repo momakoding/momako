@@ -1,13 +1,13 @@
 # 游戏与 HUD 联动指南 (HUD Integration)
 
-游戏场景（Phaser）与界面层（Vue 3）通过 `@momako-jam/core` 提供的 `useEventBus()` 保持完全解耦。
+游戏场景（Phaser）与界面层（Vue 3）通过 `@momako/core` 提供的 `useEventBus()` 保持完全解耦。
 
 ---
 
 ## 常用事件一览
 
 ```typescript
-import { EVENT_KEYS, useEventBus } from '@momako-jam/core';
+import { EVENT_KEYS, useEventBus } from '@momako/core';
 
 const eventBus = useEventBus();
 ```
