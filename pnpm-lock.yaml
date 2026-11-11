@@ -183,7 +183,7 @@ importers:
 
   packages/hud:
     dependencies:
-      '@momako-jam/core':
+      '@momako/core':
         specifier: workspace:*
         version: link:../core
       '@vueuse/core':
@@ -226,10 +226,10 @@ importers:
 
   templates/er:
     dependencies:
-      '@momako-jam/core':
+      '@momako/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@momako-jam/hud':
+      '@momako/hud':
         specifier: workspace:*
         version: link:../../packages/hud
       '@tailwindcss/vite':
@@ -284,10 +284,10 @@ importers:
 
   templates/san:
     dependencies:
-      '@momako-jam/core':
+      '@momako/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@momako-jam/hud':
+      '@momako/hud':
         specifier: workspace:*
         version: link:../../packages/hud
       '@tailwindcss/vite':

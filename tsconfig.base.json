@@ -13,8 +13,8 @@
     "skipLibCheck": true,
     "noEmit": true,
     "paths": {
-      "@momako-jam/core": ["./packages/core/src"],
-      "@momako-jam/hud": ["./packages/hud/src"]
+      "@momako/core": ["./packages/core/src"],
+      "@momako/hud": ["./packages/hud/src"]
     }
   }
 }

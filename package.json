@@ -1,5 +1,5 @@
 {
-  "name": "momako-jam-monorepo",
+  "name": "momako-monorepo",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -7,9 +7,9 @@
   "scripts": {
     "build": "pnpm -r build",
     "sync:docs": "node scripts/partition-docs.js",
-    "dev:er": "pnpm --filter momako-jam-er dev",
-    "dev:san": "pnpm --filter momako-jam-san dev",
-    "dev:cli": "pnpm --filter @momako-jam/cli dev"
+    "dev:er": "pnpm --filter momako-er dev",
+    "dev:san": "pnpm --filter momako-san dev",
+    "dev:cli": "pnpm --filter @momako/cli dev"
   },
   "devDependencies": {
     "prettier": "^3.6.2",

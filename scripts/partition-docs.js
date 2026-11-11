@@ -29,7 +29,7 @@ const TEMPLATES = fs.existsSync(templatesDir)
   : ['phaser', 'san'];
 
 export function partitionAndSyncDocs() {
-  console.log('\n📚 \x1b[1m\x1b[36m[Momako Jam] 文档分流与规约检查脚本...\x1b[0m\n');
+  console.log('\n📚 \x1b[1m\x1b[36m[Momako] 文档分流与规约检查脚本...\x1b[0m\n');
 
   let hasErrors = false;
 
