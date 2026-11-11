@@ -1,7 +1,7 @@
 # Momako
 
 <p align="center">
-  <img src="./assets/momako_full.jfif" alt="Momako" width="30%" />
+  <img src="./assets/momako_readme.webp" alt="Momako" width="30%" />
 </p>
 
 <p align="center">
