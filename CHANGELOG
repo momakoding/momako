@@ -1,19 +1,13 @@
 # Changelog
 
-All notable changes to this project are recorded here, following [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+All notable changes to this project are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-### Changed
+### Added
 
-- 2026-11-11 18:46 The project is now called Momako. Packages are `@momako/core`, `@momako/hud` and `@momako/cli`, the templates are `momako-er`, `momako-san` and so on, and the scaffold command is `momako create`.
-- 2026-11-11 18:40 The 2D (er) and 3D (san) templates now share one layout: game code lives under `src/modules/game`, game text and credits under `src/modules/meta-info`, and common code under `src/shared`.
-- 2026-11-11 18:40 The 3D template's game is split into a page, a scene, small reusable pieces and a plain game-state module, so it is easier to extend. Gameplay is unchanged.
-
-### Fixed
-
-- 2026-11-11 18:40 The 3D template's About page now shows the team name, which was previously read from the wrong field.
-
-### Removed
-
-- 2026-11-11 18:40 The 2D template no longer ships unused logo images or an outdated `CODEBASE_STATE.md`.
+- 2026-11-11 13:32 Initial version. `npx momako create` scaffolds a game project from one of five templates: `er` (2D web, Vue 3 with Phaser 4 or plain Vue), `san` (3D web, Vue 3 with TresJS), `godot`, `unity` and `unreal`. The last three contain only a README and design-spec documents so far.
+- 2026-11-11 13:32 The two web templates start with a playable demo, home, how-to-play, settings and about pages, a pause menu, Chinese and English text, and saved settings. Title, team and instructions are edited per language in one place.
