@@ -1,156 +1,126 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import readline from 'node:readline/promises';
-import { execSync } from 'node:child_process';
+import { spawnSync } from 'node:child_process';
+import { CliError } from './errors.js';
+import { DEFAULT_PROJECT_NAME, DEFAULT_TEMPLATE_ID, ENGINES, engineLabel, findEngine } from './engines.js';
+import { createTranslator } from './i18n/index.js';
+import { askChoice, askConfirm, askText, isInteractive } from './prompts.js';
+import { scaffoldProject } from './scaffold.js';
+import { projectNameFromPath, validateProjectName } from './validate.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+/**
+ * @typedef {(key: string, params?: Record<string, unknown>) => string} Translator
+ */
 
-const ENGINES = [
-  { id: 'er', name: '🎮 2D Web (Vue 3 + Phaser 4 / 纯 Vue) - [momako-er]', type: 'web' },
-  { id: 'san', name: '🌐 3D Web (TresJS / 声明式 3D) - [momako-san]', type: 'web' },
-  { id: 'godot', name: '🤖 Godot 4.x Engine - [momako-godot]', type: 'native' },
-  { id: 'unity', name: '⚡ Unity 6 (WebGL/PC) - [momako-unity]', type: 'native' },
-  { id: 'unreal', name: '🔥 Unreal Engine 5  - [momako-unreal]', type: 'native' },
-];
+/**
+ * @typedef {object} CreateOptions
+ * @property {string} [template] Template id.
+ * @property {boolean} [yes] Accept defaults and skip prompts.
+ * @property {boolean} [git] Run git init (default true).
+ * @property {boolean} [force] Allow a non-empty target directory.
+ * @property {Translator} [t] Translate function (English when omitted).
+ */
 
-function copyDirRecursive(src, dest, transformPkgName) {
-  fs.mkdirSync(dest, { recursive: true });
-  const entries = fs.readdirSync(src, { withFileTypes: true });
-
-  for (const entry of entries) {
-    const srcPath = path.join(src, entry.name);
-    const destPath = path.join(dest, entry.name);
-
-    if (entry.isDirectory()) {
-      if (['node_modules', 'dist', '.git', '.turbo'].includes(entry.name)) {
-        continue;
-      }
-      copyDirRecursive(srcPath, destPath, transformPkgName);
-    } else {
-      if (entry.name === 'package.json' && transformPkgName) {
-        const pkg = JSON.parse(fs.readFileSync(srcPath, 'utf8'));
-        pkg.name = transformPkgName;
-        pkg.version = '0.1.0';
-        fs.writeFileSync(destPath, JSON.stringify(pkg, null, 2) + '\n', 'utf8');
-      } else {
-        fs.copyFileSync(srcPath, destPath);
-      }
-    }
-  }
+/**
+ * Resolves the project name or path from the argument, defaults or a prompt.
+ * @param {Translator} t Translate function.
+ * @param {string | undefined} name Name given on the command line.
+ * @param {boolean} yes Whether defaults are accepted.
+ * @returns {Promise<string>} Validated name or path.
+ * @throws {CliError} When the name is invalid or cannot be asked for.
+ */
+async function resolveName(t, name, yes) {
+  const value =
+    name ?? (yes ? DEFAULT_PROJECT_NAME : await askText(t, t('prompt.projectName'), DEFAULT_PROJECT_NAME, 'hint.passName'));
+  const problem = validateProjectName(value);
+  if (problem) throw new CliError('invalidName', { name: value, reason: problem });
+  return value;
 }
 
-export async function runCreate(targetName, options = {}) {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
+/**
+ * Resolves the template id from the option, defaults or a prompt.
+ * @param {Translator} t Translate function.
+ * @param {string | undefined} template Template id given on the command line.
+ * @param {boolean} yes Whether defaults are accepted.
+ * @returns {Promise<string>} Template id.
+ */
+async function resolveTemplate(t, template, yes) {
+  if (template) return template;
+  if (yes) return DEFAULT_TEMPLATE_ID;
+  const choices = ENGINES.map((engine) => ({ value: engine.id, label: `${engineLabel(t, engine)} [${engine.id}]` }));
+  return askChoice(t, t('prompt.engine'), choices, 'hint.passTemplate');
+}
 
-  try {
-    console.log('\n🌟 \x1b[1m\x1b[33mMomako Scaffolder\x1b[0m\n');
+/**
+ * Checks that the target directory can be written to, asking for confirmation when needed.
+ * @param {Translator} t Translate function.
+ * @param {string} targetDir Absolute target directory.
+ * @param {boolean} force Whether a non-empty directory is accepted.
+ * @param {boolean} yes Whether prompts are skipped.
+ * @returns {Promise<boolean>} False when the user declined.
+ * @throws {CliError} When the target is a file or a non-empty directory without permission.
+ */
+async function ensureTargetWritable(t, targetDir, force, yes) {
+  if (!fs.existsSync(targetDir)) return true;
+  if (!fs.statSync(targetDir).isDirectory()) throw new CliError('notDirectory', { dir: targetDir });
+  if (fs.readdirSync(targetDir).length === 0 || force) return true;
+  if (yes || !isInteractive()) throw new CliError('notEmpty', { dir: targetDir });
+  return askConfirm(t, t('prompt.nonEmptyConfirm', { dir: targetDir }), false, 'hint.useForce');
+}
 
-    // 1. Project Name
-    let projectName = targetName;
-    if (!projectName) {
-      projectName = (await rl.question('? 游戏工程名称 (Project name) [my-jam-game]: ')).trim() || 'my-jam-game';
-    }
+/**
+ * Runs git init in the project directory. Failure only produces a note.
+ * @param {Translator} t Translate function.
+ * @param {string} targetDir Project directory.
+ * @returns {void}
+ */
+function initGit(t, targetDir) {
+  const result = spawnSync('git', ['init'], { cwd: targetDir, stdio: 'ignore' });
+  console.log(t(result.status === 0 ? 'status.gitInit' : 'status.gitFailed'));
+}
 
-    const targetDir = path.resolve(process.cwd(), projectName);
-    if (fs.existsSync(targetDir)) {
-      const overwrite = (await rl.question(`\x1b[33m目标目录 "${projectName}" 已存在，是否覆盖？(y/N): \x1b[0m`)).trim().toLowerCase();
-      if (overwrite !== 'y') {
-        console.log('操作已取消。');
-        return;
-      }
-    }
-
-    // 2. Select Engine
-    let selectedEngineId = options.template;
-    if (selectedEngineId === 'phaser') selectedEngineId = 'er';
-    if (!selectedEngineId) {
-      console.log('\n请选择游戏引擎架构 (Select game engine):');
-      ENGINES.forEach((engine, idx) => {
-        console.log(`  \x1b[36m${idx + 1})\x1b[0m ${engine.name}`);
-      });
-      const choice = (await rl.question('\n输入序号 [1]: ')).trim() || '1';
-      const selectedIndex = parseInt(choice, 10) - 1;
-      const validIndex = selectedIndex >= 0 && selectedIndex < ENGINES.length ? selectedIndex : 0;
-      selectedEngineId = ENGINES[validIndex].id;
-    }
-
-    const engineConfig = ENGINES.find((e) => e.id === selectedEngineId) || ENGINES[0];
-    console.log(`\n已选择: \x1b[32m${engineConfig.name}\x1b[0m\n`);
-
-    // 3. Optional Features for Web
-    if (engineConfig.type === 'web') {
-      console.log('配置默认已集成组件:');
-      console.log('  ✔ @momako/hud (通用 HUD、开始菜单、暂停与设置弹层)');
-      console.log('  ✔ @momako/core (跨边界 EventBus 与标准事件通信)');
-      console.log('  ✔ 双语 i18n 系统 (zh-CN / en 结构校验)');
-      console.log('  ✔ 音频与分辨率持久化存储 (Pinia persisted-state)');
-      console.log('  ✔ AI Agent 协同样板 (AGENTS.md + spec.md)\n');
-    }
-
-    // 4. Locate template
-    // Check local templates directory in monorepo first
-    let templateDir = path.resolve(__dirname, '../../../templates', selectedEngineId);
-    if (!fs.existsSync(templateDir)) {
-      templateDir = path.resolve(__dirname, '../templates', selectedEngineId);
-    }
-
-    if (!fs.existsSync(templateDir)) {
-      throw new Error(`找不到模板目录: ${templateDir}`);
-    }
-
-    console.log(`🚀 正在生成工程到 \x1b[36m${targetDir}\x1b[0m ...`);
-    copyDirRecursive(templateDir, targetDir, projectName);
-
-    // Copy secondary developer AGENTS template (_AGENTS.md -> AGENTS.md)
-    const possibleAgents = [
-      path.resolve(__dirname, '../../../_AGENTS.md'),
-      path.resolve(__dirname, '../../_AGENTS.md'),
-      path.resolve(__dirname, '../_AGENTS.md'),
-      path.resolve(__dirname, '_AGENTS.md'),
-    ];
-    const agentsSource = possibleAgents.find((p) => fs.existsSync(p));
-    if (agentsSource) {
-      fs.copyFileSync(agentsSource, path.join(targetDir, 'AGENTS.md'));
-    }
-
-    // Update spec.md title with project name if present
-    const specPath = path.join(targetDir, 'docs', 'spec', 'spec.md');
-    if (fs.existsSync(specPath)) {
-      let specContent = fs.readFileSync(specPath, 'utf8');
-      specContent = specContent.replace(/^# .*$/m, `# 游戏设计说明书 (SPEC) - ${projectName}`);
-      fs.writeFileSync(specPath, specContent, 'utf8');
-    }
-
-    // 5. Initialize git
-    try {
-      execSync('git init', { cwd: targetDir, stdio: 'ignore' });
-      console.log('✔ 已初始化 Git 仓库');
-    } catch {
-      // ignore
-    }
-
-    console.log('\n🎉 \x1b[1m\x1b[32m项目创建成功！(Project created successfully)\x1b[0m\n');
-    console.log('开始你的 Game Jam 之旅：');
-    console.log(`  \x1b[33mcd ${projectName}\x1b[0m`);
-
-    if (engineConfig.type === 'web') {
-      console.log('  \x1b[33mpnpm install\x1b[0m');
-      console.log('  \x1b[33mpnpm dev\x1b[0m\n');
-    } else if (engineConfig.id === 'godot') {
-      console.log('  使用 Godot 4.3+ 打开 project.godot 即可开始开发！\n');
-    } else if (engineConfig.id === 'unity') {
-      console.log('  使用 Unity Hub 打开该目录即可开始！\n');
-    } else if (engineConfig.id === 'unreal') {
-      console.log('  使用 Unreal Engine 5 打开对应 .uproject 即可！\n');
-    }
-
-    console.log('💡 提示：项目内置了全套 AI 协作指令与分层架构，把想法用中文告诉 AI 助手即可极速开发！\n');
-  } finally {
-    rl.close();
+/**
+ * Prints the follow-up steps for the generated project.
+ * @param {Translator} t Translate function.
+ * @param {string} engineId Template id.
+ * @param {string} relativeDir Project directory relative to the cwd.
+ * @returns {void}
+ */
+function printNextSteps(t, engineId, relativeDir) {
+  console.log(`\n${t('next.title')}`);
+  console.log(`  cd ${relativeDir}`);
+  if (findEngine(engineId)?.type === 'web') {
+    console.log('  pnpm install');
+    console.log('  pnpm dev');
+    return;
   }
+  const key = ['godot', 'unity', 'unreal'].includes(engineId) ? `next.${engineId}` : 'next.generic';
+  console.log(`  ${t(key)}`);
+}
+
+/**
+ * Orchestrates project creation: prompts, safety checks, scaffolding, git and next steps.
+ * @param {string | undefined} name Project name or path.
+ * @param {CreateOptions} [options] Create options.
+ * @returns {Promise<void>}
+ * @throws {CliError} On invalid input or scaffolding failure.
+ */
+export async function runCreate(name, options = {}) {
+  const { yes = false, git = true, force = false, t = createTranslator('en') } = options;
+  const nameOrPath = await resolveName(t, name, yes);
+  const targetDir = path.resolve(process.cwd(), nameOrPath);
+  const projectName = projectNameFromPath(nameOrPath);
+  const templateId = await resolveTemplate(t, options.template, yes);
+  if (!findEngine(templateId)) {
+    throw new CliError('unknownTemplate', { template: templateId, valid: ENGINES.map((e) => e.id).join(', ') });
+  }
+  if (!(await ensureTargetWritable(t, targetDir, force, yes))) {
+    console.log(t('status.cancelled'));
+    return;
+  }
+  console.log(`\n${t('status.creating', { name: projectName, template: templateId, dir: targetDir })}`);
+  const summary = scaffoldProject({ templateId, targetDir, projectName });
+  console.log(t('status.wroteFiles', { count: summary.files }));
+  if (git) initGit(t, targetDir);
+  printNextSteps(t, templateId, path.relative(process.cwd(), targetDir) || '.');
 }
