@@ -1,6 +1,6 @@
 # 游戏与 HUD 联动指南 (HUD Integration)
 
-游戏场景（Phaser）与界面层（Vue 3）通过 `@momako/core` 提供的 `useEventBus()` 保持完全解耦。
+3D 场景（TresJS）与界面层（Vue 3）通过 `@momako/core` 提供的 `useEventBus()` 保持完全解耦。
 
 ---
 
@@ -27,22 +27,29 @@ eventBus.emit(EVENT_KEYS.ROUND_UPDATE, completedRounds);
 eventBus.emit(EVENT_KEYS.GAME_OVER);
 ```
 
-### 4. 监听暂停与恢复
-在场景初始化时监听 Vue HUD 发来的控制指令：
+### 4. 监听暂停、恢复与重开
+游戏逻辑集中在 `src/shared/runtime/game.ts` 的 `useGame()` 中：`start()` 注册监听，`stop()` 注销监听。页面在 `onMounted` / `onUnmounted` 中调用即可：
 
 ```typescript
-export class GameScene extends Phaser.Scene {
-  create() {
-    eventBus.on(EVENT_KEYS.GAME_PAUSE, this.handlePause);
-    eventBus.on(EVENT_KEYS.GAME_RESUME, this.handleResume);
-    eventBus.on(EVENT_KEYS.GAME_RESTART, this.handleRestart);
-
-    // 场景销毁时清理监听器
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-      eventBus.off(EVENT_KEYS.GAME_PAUSE, this.handlePause);
-      eventBus.off(EVENT_KEYS.GAME_RESUME, this.handleResume);
-      eventBus.off(EVENT_KEYS.GAME_RESTART, this.handleRestart);
-    });
-  }
+// src/shared/runtime/game.ts
+function start(): void {
+  eventBus.on(EVENT_KEYS.GAME_PAUSE, pause);
+  eventBus.on(EVENT_KEYS.GAME_RESUME, resume);
+  eventBus.on(EVENT_KEYS.GAME_RESTART, restart);
 }
+
+function stop(): void {
+  eventBus.off(EVENT_KEYS.GAME_PAUSE, pause);
+  eventBus.off(EVENT_KEYS.GAME_RESUME, resume);
+  eventBus.off(EVENT_KEYS.GAME_RESTART, restart);
+}
+```
+
+```vue
+<!-- src/game/pages/index.vue -->
+<script setup lang="ts">
+const { start, stop } = useGame();
+onMounted(start);
+onUnmounted(stop);
+</script>
 ```

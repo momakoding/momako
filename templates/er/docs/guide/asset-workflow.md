@@ -7,7 +7,7 @@
 
 ## 2. 在 Phaser 中加载与使用
 
-在 `src/scenes/boot-scene.ts` 的 `preload()` 方法中载入素材：
+在 `src/game/scenes/boot-scene.ts` 的 `preload()` 方法中载入素材：
 
 ```typescript
 preload() {
@@ -25,7 +25,7 @@ preload() {
 }
 ```
 
-在 `src/scenes/game-scene.ts` 中直接通过 key 创建精灵：
+在 `src/game/scenes/game-scene.ts` 中直接通过 key 创建精灵：
 
 ```typescript
 create() {
