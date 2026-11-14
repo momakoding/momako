@@ -70,7 +70,9 @@ Templates:
   'error.templateNotFound': 'Template "{template}" was not found.',
   'error.agentsNotFound': 'AGENTS.md source (_AGENTS.md) was not found.',
   'error.baseTsconfigNotFound': 'Base tsconfig (tsconfig.base.json) was not found.',
-  'error.versionsNotFound': 'Cannot determine @momako/core and @momako/hud versions (versions.json is missing).',
+  'error.hudNotFound': 'HUD sources (packages/hud or the packaged hud folder) were not found.',
+  'error.coreNotFound': 'Core sources (packages/core or the packaged core folder) were not found.',
+  'error.mergeConflict': 'Cannot merge into the project: "{file}" already exists.',
   'error.workspaceVersionMissing': 'Workspace dependency "{dep}" has no known published version.',
   'error.unknownCommand': 'Unknown command "{command}".',
 };

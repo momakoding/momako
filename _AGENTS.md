@@ -73,11 +73,12 @@ You are an AI game development partner building a Game Jam or indie game on **Mo
 
 - **Game Layer Ownership:**
   - You own all game logic, levels, assets, and custom game scenes.
-  - Game pages live strictly under `src/pages/game/` (entry: `src/pages/game/index.vue`). You can add multiple Vue sub-pages under `game/` as needed (e.g. shop, dialogue, level select).
-  - Game engine logic (e.g. Phaser scenes for 2D, TresJS components for 3D, or pure Vue games) lives in `src/scenes/` and `src/contents/`.
+  - Game pages live strictly under `src/game/pages/` (entry: `src/game/pages/index.vue`). You can add multiple Vue sub-pages there as needed (e.g. shop, dialogue, level select).
+  - Game scenes, components and assets live in `src/game/` (`scenes/`, `components/`); engine-agnostic game session logic lives in `src/shared/`.
+  - `src/contents/` holds non-code (low-code) content only. Player-visible text (game info, team, in-game strings, how-to-play, credits) lives in `src/contents/meta-info/`; never put game code there.
 - **UI & HUD Layer Decoupling:**
-  - Universal pages (`home`, `how-to-play`, `settings`, `about-us`) and the in-game HUD layout (`<GameShellLayout>`) are provided out-of-the-box by `@momako/hud`.
-  - Game-to-UI communication goes exclusively through `@momako/core` EventBus (`EVENT_KEYS.SCORE_UPDATE`, `ROUND_UPDATE`, `GAME_PAUSE`, `GAME_RESUME`, `GAME_RESTART`).
+  - Universal pages (`home`, `how-to-play`, `settings`, `about-us`) and the in-game HUD layout (`<GameShellLayout>`) are provided out-of-the-box as plain source files merged into `src/` (`src/pages/`, `src/components/`, `src/stores/`, `src/i18n/`, `src/styles/`, barrel `src/hud.ts`); import them from `@/hud`. There is no `@momako/hud` package dependency.
+  - Game-to-UI communication goes exclusively through the EventBus in `src/core/` (`import ... from '@/core'`). Add new events to `EVENT_KEYS` there as the game grows (`EVENT_KEYS.SCORE_UPDATE`, `ROUND_UPDATE`, `GAME_PAUSE`, `GAME_RESUME`, `GAME_RESTART`).
   - Audio and settings persistence is handled by Pinia stores (`useSettingsStore`, `useSaveStore`).
 
 ---
@@ -113,7 +114,7 @@ You are an AI game development partner building a Game Jam or indie game on **Mo
 
 - `var`.
 - `any` — use `unknown` + narrowing, or a real type.
-- Modifying files outside `pages/game/`, `src/scenes/`, `src/contents/`, `src/meta-info/` unless explicitly requested.
+- Modifying files outside `src/game/`, `src/contents/`, `src/shared/` and `src/core/` (this includes the generated HUD files) unless explicitly requested.
 - Using full-file overwrite `write` on existing files — always use targeted `edit`.
 - Auto-installing dependencies without user confirmation.
 - Co-author trailers in commit messages.

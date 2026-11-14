@@ -70,7 +70,9 @@ Predlošci:
   'error.templateNotFound': 'Predložak "{template}" nije pronađen.',
   'error.agentsNotFound': 'Izvor za AGENTS.md (_AGENTS.md) nije pronađen.',
   'error.baseTsconfigNotFound': 'Osnovni tsconfig (tsconfig.base.json) nije pronađen.',
-  'error.versionsNotFound': 'Nije moguće odrediti verzije @momako/core i @momako/hud (nedostaje versions.json).',
+  'error.hudNotFound': 'Izvorni kod HUD-a (packages/hud ili isporučena hud mapa) nije pronađen.',
+  'error.coreNotFound': 'Izvorni kod core-a (packages/core ili isporučena core mapa) nije pronađen.',
+  'error.mergeConflict': 'Nije moguće spojiti s projektom: "{file}" već postoji.',
   'error.workspaceVersionMissing': 'Ovisnost radnog prostora "{dep}" nema poznatu objavljenu verziju.',
   'error.unknownCommand': 'Nepoznata naredba "{command}".',
 };

@@ -36,16 +36,6 @@ function copyDir(src, dest) {
 }
 
 /**
- * Reads the version field of a workspace package.
- * @param {string} name Package directory name under packages/.
- * @returns {string} Package version.
- */
-function readVersion(name) {
-  const file = path.join(REPO_ROOT, 'packages', name, 'package.json');
-  return JSON.parse(fs.readFileSync(file, 'utf8')).version;
-}
-
-/**
  * Generates all artifacts that must ship inside the npm tarball.
  * @returns {void}
  */
@@ -54,13 +44,17 @@ function prepack() {
   TEMPLATE_IDS.forEach((id) => {
     copyDir(path.join(REPO_ROOT, 'templates', id), path.join(CLI_ROOT, 'templates', id));
   });
+  fs.rmSync(path.join(CLI_ROOT, 'core'), { recursive: true, force: true });
+  copyDir(path.join(REPO_ROOT, 'packages', 'core', 'src'), path.join(CLI_ROOT, 'core', 'src'));
+  fs.copyFileSync(path.join(REPO_ROOT, 'packages', 'core', 'package.json'), path.join(CLI_ROOT, 'core', 'package.json'));
+  fs.rmSync(path.join(CLI_ROOT, 'hud'), { recursive: true, force: true });
+  copyDir(path.join(REPO_ROOT, 'packages', 'hud', 'src'), path.join(CLI_ROOT, 'hud', 'src'));
+  fs.copyFileSync(path.join(REPO_ROOT, 'packages', 'hud', 'package.json'), path.join(CLI_ROOT, 'hud', 'package.json'));
   fs.copyFileSync(path.join(REPO_ROOT, '_AGENTS.md'), path.join(CLI_ROOT, '_AGENTS.md'));
   fs.copyFileSync(
     path.join(REPO_ROOT, 'tsconfig.base.json'),
     path.join(CLI_ROOT, 'templates', '_tsconfig.base.json'),
   );
-  const versions = { '@momako/core': readVersion('core'), '@momako/hud': readVersion('hud') };
-  fs.writeFileSync(path.join(CLI_ROOT, 'versions.json'), JSON.stringify(versions, null, 2) + '\n');
 }
 
 prepack();

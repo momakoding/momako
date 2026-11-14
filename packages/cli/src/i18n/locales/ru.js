@@ -70,7 +70,9 @@ Momako - генератор заготовок для game jam
   'error.templateNotFound': 'Шаблон "{template}" не найден.',
   'error.agentsNotFound': 'Не найден источник AGENTS.md (_AGENTS.md).',
   'error.baseTsconfigNotFound': 'Базовый tsconfig (tsconfig.base.json) не найден.',
-  'error.versionsNotFound': 'Не удалось определить версии @momako/core и @momako/hud (отсутствует versions.json).',
+  'error.hudNotFound': 'Исходники HUD (packages/hud или поставляемая папка hud) не найдены.',
+  'error.coreNotFound': 'Исходники core (packages/core или поставляемая папка core) не найдены.',
+  'error.mergeConflict': 'Не удалось слить с проектом: "{file}" уже существует.',
   'error.workspaceVersionMissing': 'У зависимости рабочей области "{dep}" нет известной опубликованной версии.',
   'error.unknownCommand': 'Неизвестная команда "{command}".',
 };

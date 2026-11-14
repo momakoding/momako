@@ -70,7 +70,9 @@ Momako - Game Jam 项目脚手架
   'error.templateNotFound': '找不到模板 "{template}"。',
   'error.agentsNotFound': '找不到 AGENTS.md 的源文件 (_AGENTS.md)。',
   'error.baseTsconfigNotFound': '找不到基础 tsconfig (tsconfig.base.json)。',
-  'error.versionsNotFound': '无法确定 @momako/core 和 @momako/hud 的版本（缺少 versions.json）。',
+  'error.hudNotFound': '找不到 HUD 源码（packages/hud 或随包携带的 hud 目录）。',
+  'error.coreNotFound': '找不到 core 源码（packages/core 或随包携带的 core 目录）。',
+  'error.mergeConflict': '无法合并进工程："{file}" 已存在。',
   'error.workspaceVersionMissing': '工作区依赖 "{dep}" 没有已知的发布版本。',
   'error.unknownCommand': '未知命令 "{command}"。',
 };

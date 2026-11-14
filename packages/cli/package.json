@@ -14,8 +14,9 @@
     "bin",
     "src",
     "templates",
-    "_AGENTS.md",
-    "versions.json"
+    "hud",
+    "core",
+    "_AGENTS.md"
   ],
   "engines": {
     "node": ">=20"
