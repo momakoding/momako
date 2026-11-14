@@ -42,17 +42,19 @@ export interface TeamMember {
   name: string;
   /** 职责角色，如"策划 / 程序" */
   role: string;
-  /** 个人主页或社交链接（可选） */
-  url?: string;
+  /** 头像 emoji 或图片 URL（可选） */
+  avatar?: string;
+  /** 是否有详细介绍页（对应 team-intro/<id>.md） */
+  introId?: string;
 }
 
 export interface TeamInfo {
   /** 团队名称 */
-  name: string;
+  teamName: string;
+  /** 团队简介（纯文本，较短，可选） */
+  description?: string;
   /** 成员列表 */
   members: TeamMember[];
-  /** 团队介绍（可选） */
-  description?: string;
 }
 
 /* ── 设置体系 ── */
