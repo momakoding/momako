@@ -4,7 +4,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { createJamI18n } from '@momako/hud';
 import { router } from './router';
 import App from './App.vue';
-import { META_MESSAGES, getHowToPlayMarkdown, getOssCredits } from '@/modules/meta-info';
+import { META_MESSAGES, getHowToPlayMarkdown, getOssCredits } from '@/contents/meta-info';
 import './style.css';
 
 const pinia = createPinia();

@@ -1,6 +1,6 @@
 /**
  * 3D 游戏会话的玩法调参数值 — 纯数据，无引擎依赖。
- * 视觉相关数值（颜色、几何尺寸、灯光）见 modules/game/scenes/constants.ts。
+ * 视觉相关数值（颜色、几何尺寸、灯光）见 game/scenes/constants.ts。
  */
 
 /** 单帧时间步长上限（秒），防止切页后巨大 delta 造成穿透 */
