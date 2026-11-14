@@ -10,9 +10,9 @@
 
         <div class="about-us__cards">
           <!-- 团队卡片 -->
-          <section v-if="teamInfo.name" class="about-card">
+          <section class="about-card">
             <p class="about-card__eyebrow">{{ t('aboutUs.team') }}</p>
-            <h3 class="about-card__heading">{{ teamInfo.name }}</h3>
+            <h3 class="about-card__heading">{{ teamInfo.teamName }}</h3>
             <p v-if="teamInfo.description" class="about-card__text">{{ teamInfo.description }}</p>
 
             <ul v-if="teamInfo.members?.length" class="about-card__members">
@@ -56,11 +56,13 @@
             </div>
           </div>
         </section>
+      </div>
 
+      <template #footer>
         <div class="about-us__actions">
           <GameButton :label="t('common.backHome')" variant="secondary" @click="goHome" />
         </div>
-      </div>
+      </template>
     </ScrollableContent>
   </div>
 </template>
@@ -116,7 +118,11 @@ function goHome() {
 }
 
 .about-us__cards {
-  @apply w-full flex flex-col gap-6;
+  @apply w-full flex flex-col gap-6 md:flex-row md:items-stretch;
+}
+
+.about-us__cards > .about-card {
+  @apply md:flex-1;
 }
 
 .about-card {
@@ -192,6 +198,6 @@ function goHome() {
 }
 
 .about-us__actions {
-  @apply mt-4;
+  @apply flex w-full justify-center border-t border-(--color-border-subtle)/70 bg-(--color-bg-page)/80 p-4 backdrop-blur;
 }
 </style>
