@@ -79,7 +79,7 @@ Projekt dolazi s vlastitom Git konfiguracijom, dokumentom o dizajnu igranja `doc
    * Početni ekran, kontrole jačine i zvuka, postavke kvaliteta i rezolucije, meni pauze i spremanje igre nalaze se u `@momako/hud`. Dvije strane komuniciraju samo preko standardnih definicija događaja.
 
 2. **Sadržaj igre može narasti u više stranica**:
-   * Šabloni organizuju kod po domenama. Sadržaj igre je u `src/modules/game/`, a zajednički kod u `src/shared/`.
+   * Šabloni organizuju kod po domenama. Sadržaj igre je u `src/game/`, a zajednički kod u `src/shared/`.
    * Možete dodavati podstranice igre, kao što su tekst priče, prodavnica, izbor nivoa ili inventar.
 
 3. **Pravila za razvoj uz pomoć AI-ja**:

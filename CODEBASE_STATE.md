@@ -4,7 +4,7 @@
 > Agent collaboration rules live in [`AGENTS.md`](./AGENTS.md), architecture history in [`docs/DECISION_LOG.md`](./docs/DECISION_LOG.md).
 
 **Current scaffold status:** *Monorepo initialized; core, hud, phaser, san, and cli operational.*
-**Last updated:** 2026-11-11 22:30
+**Last updated:** 2026-11-12 22:50
 
 ---
 
@@ -70,26 +70,32 @@ flowchart TB
 1. **`packages/core`** 是底层纯逻辑库，不依赖任何 UI 框架或具体游戏引擎。
 2. **`packages/hud`** 是通用 UI 库，依赖 `@momako/core`，不依赖任何游戏引擎（无论 Phaser 还是 Three.js）。
 3. **`templates/*`** 游戏模板引用 `@momako/core` 与 `@momako/hud`，通过 `EVENT_KEYS` 进行双向解耦通信。
-4. **`packages/cli`** 负责将 `templates/*` 以及可选包复制生成为独立可交付工程。
+4. **`packages/cli`** 负责将 `templates/*` 复制生成为独立可交付工程：Web 模板会把 `packages/hud/src` 合并进生成工程的 `src/`（入口为 `src/hud.ts`，导入改写为 `@/hud`），`packages/core/src` 同样生成为 `src/core/`（导入改写为 `@/core`），因为 core 目前仍需要随游戏定制（事件常量、共享类型）。生成工程不依赖任何 `@momako/*` 包。
 
 ---
 
 ## 5. Web Template Layout (`templates/er`, `templates/san`)
 
-Both web templates share one domain-module skeleton. Dependency direction is `router → modules → shared`; `shared` never imports `modules`; modules reach each other only through their `index.ts` barrel.
+Both web templates share one skeleton. Dependency direction is `router → game / shared`; `shared` never imports `game`; `contents/` holds non-code (low-code) content only and is read by `main.ts` and the HUD pages.
 
 ```
-src/
+src/                          (template source in the monorepo)
 ├── main.ts  App.vue  style.css
 ├── router/index.ts
-├── modules/
-│   ├── game/                 gameplay domain (owns its own pages/components/scenes/assets)
-│   │   ├── index.ts          barrel (GamePage)
-│   │   ├── pages/index.vue
-│   │   ├── scenes/           er: Phaser scenes (.ts) · san: Tres scene (main-scene.vue)
-│   │   └── components/       san only: ground-grid, player-cube, star-item
-│   └── meta-info/            game/team/hud text per locale, how-to-play, OSS credits
+├── game/                     gameplay (owns its own pages/components/scenes/assets)
+│   ├── index.ts              barrel (GamePage)
+│   ├── pages/index.vue
+│   ├── scenes/               er: Phaser scenes (.ts) · san: Tres scene (main-scene.vue)
+│   └── components/           san only: ground-grid, player-cube, star-item
+├── contents/                 non-code content only
+│   └── meta-info/            game/team/hud text per locale, how-to-play/ (<lang>.md + index.ts), OSS credits
 └── shared/
     ├── engine/               er only: GameShell around Phaser.Game
     └── runtime/              useGame() session state and EventBus wiring
 ```
+
+**HUD and core are generated, not installed.** In the monorepo the templates import `@momako/hud` and `@momako/core`. `momako create` installs neither:
+- the HUD sources are merged into the generated `src/` (`components/`, `pages/` with home / how-to-play / settings / about-us, `stores/`, `i18n/`, `styles/hud.css`), the HUD barrel becomes `src/hud.ts`, `@momako/hud` imports are rewritten to `@/hud`, and the HUD third-party dependencies (`@vueuse/core`, `lucide-vue-next`, `tailwind-merge`) are added to the project `package.json`;
+- the core sources are copied to `src/core/` and `@momako/core` imports are rewritten to `@/core`, because core is not yet flexible enough to be consumed as a fixed dependency.
+
+The generated project has no `@momako/*` dependency. The san output contains no Phaser code, dependency or docs.

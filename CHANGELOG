@@ -9,5 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- 2026-11-12 22:50 Generated web projects are now standalone: the HUD pages, components, stores and styles are merged into the project's src/ and the core event bus is generated as src/core/, so there is no @momako/* dependency. Game code lives in src/game/, src/contents/ holds only low-code content (meta-info/), and the san project no longer contains any Phaser material.
 - 2026-11-11 13:32 Initial version. `npx momako create` (or `npm create momako`) scaffolds a game project, with prompts and messages in English, Chinese, Russian or Srpskohrvatski, from one of five templates: `er` (2D web, Vue 3 with Phaser 4 or plain Vue), `san` (3D web, Vue 3 with TresJS), `godot`, `unity` and `unreal`. The last three contain only a README and design-spec documents so far.
 - 2026-11-11 13:32 The two web templates start with a playable demo, home, how-to-play, settings and about pages, a pause menu, Chinese and English text, and saved settings. Title, team and instructions are edited per language in one place.

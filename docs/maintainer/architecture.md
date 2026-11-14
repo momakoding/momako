@@ -33,6 +33,7 @@ flowchart TB
 ## 2. 核心包职责划分
 
 ### `@momako/core`
+
 - **定位**：零依赖纯 TypeScript 基础层。
 - **职责**：
   - `GameEventBus`：基于浏览器事件或自建发布订阅机制，解耦 Game Canvas 与 Vue UI。
@@ -41,6 +42,7 @@ flowchart TB
 - **红线**：禁止 import 任何 Vue 组件或特定引擎（Phaser / Three.js）类型。
 
 ### `@momako/hud`
+
 - **定位**：跨引擎通用的 Game Jam UI 库。
 - **职责**：
   - `GameShellLayout`：封装顶部 HUD、右上角暂停按钮、ESC 监听、暂停菜单与游戏内设置 Modal。
@@ -52,8 +54,9 @@ flowchart TB
   - Page 命名：**根页面不加冗余后缀**（如 `home.vue`, `settings.vue`，严禁 `home-page.vue`）。
 
 ### `momako`（`packages/cli`）与 `create-momako`
+
 - **定位**：面向开发者的工程生成工具，以无作用域包 `momako` 发布；`create-momako` 是转发到它的薄包装，使 `npm create momako` 可用。
 - **命令**：`momako create [name] [-t <id>] [-y] [-f] [--no-git] [--lang <code>]`。
-- **职责**：询问项目名与引擎，递归复制模板，重写 `package.json`（名称、版本，并把 `workspace:*` 换成已发布版本）与 `tsconfig.json`（展开仓库根配置、去掉 `@momako/*` 路径），写入 `.gitignore` 与 `AGENTS.md`，并初始化 Git。
-- **打包**：`prepack` 把 `templates/*`、`_AGENTS.md`、根 `tsconfig.base.json` 与 core/hud 版本号拷入包内，`postpack` 清理。
+- **职责**：询问项目名与引擎，递归复制模板，重写 `package.json`（名称、版本）与 `tsconfig.json`（展开仓库根配置、去掉 `@momako/*` 路径），写入 `.gitignore` 与 `AGENTS.md`，并初始化 Git。**HUD 不是生成工程的依赖**：Web 模板生成时，`packages/hud/src` 的 `components/`、`pages/`、`stores/`、`i18n/`、`styles/` 合并进工程 `src/`，入口 `index.ts` 变为 `src/hud.ts`，`@momako/hud` 导入改写为 `@/hud`，HUD 的第三方依赖并入 `package.json`。**core 同样不作为依赖安装**：`packages/core/src` 拷贝为 `src/core/`，`@momako/core` 导入改写为 `@/core`（core 目前仍需随游戏定制，灵活性不足，因此与工程一起生成）。生成工程不依赖任何 `@momako/*` 包；与模板文件冲突时报错。
+- **打包**：`prepack` 把 `templates/*`、`packages/core` 的 `src/` 与 `package.json`、`packages/hud` 的 `src/` 与 `package.json`、`_AGENTS.md`、根 `tsconfig.base.json` 拷入包内，`postpack` 清理。
 - **多语言**：输出支持 `en`、`zh`、`ru`、`sh`，依次按 `--lang`、`MOMAKO_LANG`、系统语言环境选择，缺失词条回退到英文。

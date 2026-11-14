@@ -79,7 +79,7 @@ The project comes with its own Git setup, the gameplay design document `docs/spe
    * The start screen, volume and sound controls, quality and resolution settings, pause menu and saves all live in `@momako/hud`. The two sides talk only through the standard event definitions.
 
 2. **Game content can grow into many pages**:
-   * Templates organize code by domain. Game content lives in `src/modules/game/` and shared code in `src/shared/`.
+   * Templates organize code by domain. Game content lives in `src/game/` and shared code in `src/shared/`.
    * You can add game sub-pages such as story text, a shop, level select or an inventory.
 
 3. **Rules for AI-assisted development**:
